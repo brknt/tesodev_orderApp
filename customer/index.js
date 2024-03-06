@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const customerController = require('./src/controllers/customerController');
+const customerController = require('./controllers/customerController');
 
 
 
@@ -15,9 +15,9 @@ const app = express();
 mongoose.connect(process.env.MONGODB_CUSTOMER_URI, {
     useNewUrlParser: true
 }).then(() => {
-    console.log('Database connection successful');
+    console.log('Customer DB connection successful');
 }).catch((err) => {
-    console.log(`Database connection failed error = ${err}`);
+    console.log(`Customer DB connection failed error = ${err}`);
 
 });
 
@@ -31,14 +31,14 @@ app.use(express.json());
 
 
 
-app.post("/register",customerController.register);
-// app.post("/register", (req, res) => this.authController.register(req, res));
-//app.get("/dashboard", authMiddleware, (req, res) => res.json({ message: "Welcome to dashboard" }));
+app.post("/create",customerController.create);
+//app.post("/update",customerController.update);
 
 
 
 
-const port = process.env.PORT || 8081;
+
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log(`App started on port : ${port}`);
+    console.log(`Customer-Service at : ${port}`);
 })

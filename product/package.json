@@ -1,19 +1,17 @@
 {
-  "name": "customer",
+  "name": "product",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Berkant Güneş",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "amqplib": "^0.10.3",
     "express": "^4.18.3",
-    "mongoose": "^8.2.1",
-    "uuidv4": "^6.2.13"
+    "mongoose": "^8.2.1"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
