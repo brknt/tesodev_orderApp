@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const customerController = require('./controllers/customerController');
+const customerValidator = require('./middlewares/customerValidator');
 
 
 
@@ -31,8 +32,11 @@ app.use(express.json());
 
 
 
-app.post("/create",customerController.create);
-//app.post("/update",customerController.update);
+app.post("/create",customerValidator.joiValidate,customerController.create);
+app.patch("/update/:id",customerController.update);
+app.delete("/delete/:id",customerController.Delete);
+app.get("/",customerController.getAll);
+app.get("/:id",customerController.getById);
 
 
 

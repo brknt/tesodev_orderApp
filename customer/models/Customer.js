@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 
-const CustomerSchema = new mongoose.Schema({
+
+
+var CustomerSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true
@@ -34,12 +36,18 @@ const CustomerSchema = new mongoose.Schema({
 
 
 CustomerSchema.pre('save', function (next) {
-    const user = this;
-    bcrypt.hash(user.password, 10, (err, hash) => {
-        user.password = hash;
+    const customer = this;
+    bcrypt.hash(customer.password, 10, (err, hash) => {
+        customer.password = hash;
         next();
     });
 });
+
+
+
+
+
+
 
 
 const Customer = mongoose.model('Customer', CustomerSchema);
