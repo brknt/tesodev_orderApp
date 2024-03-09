@@ -1,7 +1,6 @@
 const amqp = require("amqplib");
 const config = require('../config/config');
 require('dotenv').config();
-const utils = require('../../utils/utils');
 
 
 
@@ -15,20 +14,17 @@ async function connect() {
 
       const connection = await amqp.connect(config.RABBITMQ_URI);
       channel = await connection.createChannel();
-      await channel.assertQueue("products", { durable: true });
+      await channel.assertQueue("products");
       console.log("RabbitMQ connected");
     } catch (err) {
       console.error("Failed to connect to RabbitMQ:", err);
     }
 
-  }, 10000);
+  }, 5000);
 
 
 
 }
-
-
-
 
 
 

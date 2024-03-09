@@ -40,7 +40,6 @@ const getAll = async (req, res) => {
 const createOrder = async (req, res) => {
     try {
 
-        let tempObj;
         const data = req.body;
         const { ids } = data;
         const products = await Product.find({ _id: { $in: ids } });
@@ -57,13 +56,6 @@ const createOrder = async (req, res) => {
             customerId: req.user.id,
             address: data.address
         });
-        utils.logger.logger.log('info', `ordersMap created: orderId: ${orderId}, 
-        customerId: ${req.user.id}, status: ${ordersMap.get(orderId).status}`
-        );
-        // TODO: LOG ınfo
-
-
-
 
         await messageBroker.publishMessage("orders", {
             status: 'pending',
@@ -71,29 +63,6 @@ const createOrder = async (req, res) => {
             customerId: req.user.id,
             address: data.address,
             orderId
-        });
-        
-            utils.logger.logger.log('info', `publish(orders): orderId: ${orderId}, 
-            customerId: ${req.user.id}`
-            );
-
-        messageBroker.consumeMessage("products", (data) => {
-
-            const orderData = JSON.parse(JSON.stringify(data));
-            // TODO: log info
-            tempObj = {
-                status: 'completed',
-                products: orderData.products,
-                customerId: orderData.customerId,
-                address: orderData.address,
-                price: orderData.price
-            }
-
-            // TODO:LOG info
-            utils.logger.logger.log('info', `"Completed!" consume(products): orderId: ${orderData.orderId}, 
-            customerId: ${orderData.customerId}, status: ${orderData.status}`
-            );
-
         });
 
         return res.json(utils.Response.successResponse({ success: true, result: 'Order created' }, 201))
