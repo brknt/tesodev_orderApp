@@ -1,59 +1,80 @@
 const amqp = require("amqplib");
+const config = require('../config/config');
+require('dotenv').config();
+const utils = require('../../utils/utils');
 
-class MessageBroker {
-  constructor() {
-    this.channel = null;
-  }
 
-  async connect() {
-    console.log("Connecting to RabbitMQ...");
 
-    setTimeout(async () => {
-       try {
-        const amqpServer = process.env.RABBITMQ_URI;
-        const connection = await amqp.connect(amqpServer );
-        this.channel = await connection.createChannel();
-        await this.channel.assertQueue("products");
-        console.log("RabbitMQ connected");
-      } catch (err) {
-        console.error("Failed to connect to RabbitMQ:", err.message);
-      }
-    }, 20000); 
-  }
+// ---------------connect rabbitmq--------------------
+let channel;
+async function connect() {
+  console.log("Connecting to RabbitMQ...");
 
-  async publishMessage(queue, message) {
-    if (!this.channel) {
-      console.error("No RabbitMQ channel available.");
-      return;
-    }
-
+  setTimeout(async () => {
     try {
-      await this.channel.sendToQueue(
-        queue,
-        Buffer.from(JSON.stringify(message))
-      );
+
+      const connection = await amqp.connect(config.RABBITMQ_URI);
+      channel = await connection.createChannel();
+      await channel.assertQueue("products", { durable: true });
+      console.log("RabbitMQ connected");
     } catch (err) {
-      console.log(err);
+      console.error("Failed to connect to RabbitMQ:", err);
     }
+
+  }, 10000);
+
+
+
+}
+
+
+
+
+
+
+// ---------------publish Messsage-------------
+async function publishMessage(queue, message) {
+  if (!channel) {
+    console.error("No RabbitMQ channel available.");
+    return;
   }
 
-  async consumeMessage(queue, callback) {
-    if (!this.channel) {
-      console.error("No RabbitMQ channel available.");
-      return;
-    }
+  try {
 
-    try {
-      await this.channel.consume(queue, (message) => {
-        const content = message.content.toString();
-        const parsedContent = JSON.parse(content);
-        callback(parsedContent);
-        this.channel.ack(message);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    await channel.sendToQueue(
+      queue,
+      Buffer.from(JSON.stringify(message))
+    );
+  } catch (err) {
+    console.log(err);
   }
 }
 
-module.exports = new MessageBroker();
+
+
+
+/// --------------consume Message-----------
+async function consumeMessage(queue, callback) {
+  if (!channel) {
+    console.error("No RabbitMQ channel available.");
+    return;
+  }
+
+  try {
+    await channel.consume(queue, (message) => {
+      const content = message.content.toString();
+      const parsedContent = JSON.parse(content);
+      callback(parsedContent);
+      channel.ack(message);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+
+module.exports = {
+  connect,
+  publishMessage,
+  consumeMessage
+}

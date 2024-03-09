@@ -37,6 +37,15 @@ class Response {
                 }
             }
         }
+        else if (error.stack.includes("ValidationError")) {
+            return {
+                code: Enum.HTTP_CODES.CONFLICT,
+                error: {
+                    message: "ValidationError",
+                    description: error.message
+                }
+            }
+        }
 
 
         return {

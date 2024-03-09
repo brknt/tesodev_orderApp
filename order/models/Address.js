@@ -9,7 +9,7 @@ const AddressSchema = new mongoose.Schema({
         type: String,
         default: () => uuidv4(),
         required: true,
-      },
+    },
     addressLine: {
         type: String
 
@@ -30,7 +30,7 @@ const AddressSchema = new mongoose.Schema({
 
     }
 
-},{ collection : 'address' });
+}, { collection: 'address' });
 
 
 

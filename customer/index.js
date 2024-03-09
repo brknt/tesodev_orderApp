@@ -1,19 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const customerController = require('./controllers/customerController');
-const customerValidator = require('./middlewares/customerValidator');
-
-
+const customerRoutes = require('./routes/customerRoutes');
+const cookieParser = require('cookie-parser');
+const config = require('./config/config');
 
 const app = express();
-
-
-
+const port = config.PORT;
 
 
 //CONNECT MONGODB
-mongoose.connect(process.env.MONGODB_CUSTOMER_URI, {
+mongoose.connect(config.MONGO_URI, {
     useNewUrlParser: true
 }).then(() => {
     console.log('Customer DB connection successful');
@@ -26,23 +23,17 @@ mongoose.connect(process.env.MONGODB_CUSTOMER_URI, {
 // MIDDLEWARE
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
+
+
+
+//Routes
+app.use('/customer', customerRoutes.routes);
 
 
 
 
 
-
-app.post("/create",customerValidator.joiValidate,customerController.create);
-app.patch("/update/:id",customerController.update);
-app.delete("/delete/:id",customerController.Delete);
-app.get("/",customerController.getAll);
-app.get("/:id",customerController.getById);
-
-
-
-
-
-const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log(`Customer-Service at : ${port}`);
+    console.log(`Customer-service started on port: ${port}`);
 })

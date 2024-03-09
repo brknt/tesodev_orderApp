@@ -1,11 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const amqp = require("amqplib");
 require('dotenv').config();
-const productRoutes = require('./routes/productRoutes');
 const messageBroker = require('./RabbitMQ/messageBroker');
-const cookieParser = require('cookie-parser');
 const config = require('./config/config');
+const orderRoutes = require('./routes/orderRoutes');
 
 
 const app = express();
@@ -17,30 +15,29 @@ const port = config.PORT;
 mongoose.connect(config.MONGO_URI, {
     useNewUrlParser: true
 }).then(() => {
-    console.log('Product DB connection successful');
-
-}).catch(() => {
-    console.log(`Product DB connection failed error = ${err}`);
+    console.log('Order DB connection successful');
+}).catch((err) => {
+    console.log(`Order DB connection failed error = ${err}`);
 
 });
 
 
-//CONNECT RABBITMQ
-messageBroker.connect();
-
 //MIDDLEWARE
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser());
 
 
-//Routes
-app.use('/product', productRoutes.routes);
 
 
+//CONNECT RABBITMQ
+messageBroker.OrderConsumer();
+
+
+app.use('/order', orderRoutes.routes);
 
 
 
 app.listen(port, () => {
-    console.log(`Product-service started on port: ${port}`);
+    console.log(`Order-Service at : ${port}`);
 })

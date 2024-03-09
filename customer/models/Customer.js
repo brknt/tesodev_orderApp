@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-
+const { v4: uuidv4 } = require('uuid');
 
 
 
 var CustomerSchema = new mongoose.Schema({
-    id: {
+    _id: {
         type: String,
-        required: true
-    },
+        default: () => uuidv4(),
+        required: true,
+      },
     name: {
         type: String,
         required: true
@@ -24,7 +25,7 @@ var CustomerSchema = new mongoose.Schema({
         required: true
     },
     address: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Address'
 
     }
@@ -42,10 +43,6 @@ CustomerSchema.pre('save', function (next) {
         next();
     });
 });
-
-
-
-
 
 
 

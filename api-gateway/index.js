@@ -1,29 +1,40 @@
 const express = require('express');
-const httpProxy = require('http-proxy');
-const cors = require('cors');
-
-
-const proxy = httpProxy.createProxyServer();
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
+const port = process.env.PORT || 8080;
 
 
-app.use(cors({
-    origin: 'https://localhost.com'
-}))
-
-
-
-app.use('customer', (req, res) => {
-    proxy.web(req, res, { target: "https://localhost.com/customer:3000" });
-});
-
-
+// customer-service
+app.use('/customer', createProxyMiddleware({
+    target: 'http://127.0.0.1:8081',
+    pathRewrite: {
+        '^/customer': ''
+    }
+}));
 
 
 
-const port = process.env.PORT || 3003;
+// product-service
+app.use('/product', createProxyMiddleware({
+    target: 'http://127.0.0.1:8082',
+    pathRewrite: {
+        '^/product': ''
+    }
+}));
+
+
+// order-service
+app.use('/order', createProxyMiddleware({
+    target: 'http://127.0.0.1:8083',
+    pathRewrite: {
+        '^/order': ''
+    }
+}));
+
+
+
 
 app.listen(port, () => {
-    console.log(`api-gateway startup on port: ${port}`);
-})
+    console.log(`Api-gateway started on port: ${port}`);
+});
