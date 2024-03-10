@@ -4,22 +4,32 @@ require('dotenv').config();
 const messageBroker = require('./RabbitMQ/messageBroker');
 const config = require('./config/config');
 const orderRoutes = require('./routes/orderRoutes');
+const cron = require('node-cron');
+const { sendToEmail } = require('./controllers/orderController.js');
 
 
 const app = express();
 const port = config.PORT;
 
 
-
 //CONNECT MONGODB
 mongoose.connect(config.MONGO_URI, {
-    useNewUrlParser: true
 }).then(() => {
     console.log('Order DB connection successful');
 }).catch((err) => {
     console.log(`Order DB connection failed error = ${err}`);
 
 });
+
+
+
+//CRON SCHEDULE
+cron.schedule("*/10 * * * * *", function () {//0 0 * * *
+    console.log("------------------------");
+    sendToEmail()
+    console.log("Running task at everyday");
+})
+
 
 
 //MIDDLEWARE
