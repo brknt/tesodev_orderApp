@@ -1,4 +1,4 @@
-const utils = require('../../utils/utils');
+const utils = require('../utils/utils');
 const Order = require('../models/Order');
 const Address = require('../models/Address');
 const Audit = require('../models/Audit');
@@ -165,8 +165,8 @@ const sendToEmail = async () => {
 
 
     } catch (error) {
-        let errorResponse = utils.Response.errorResponse(error);
-        return res.status(errorResponse.code).json(errorResponse);
+        console.log('sendToEmailError::',error);
+        
     }
 }
 

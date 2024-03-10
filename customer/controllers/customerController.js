@@ -4,7 +4,7 @@ const joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const utils = require('../../utils/utils');
+const utils = require('../utils/utils');
 
 
 
