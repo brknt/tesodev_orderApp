@@ -3,6 +3,7 @@ const Order = require('../models/Order');
 const Address = require('../models/Address');
 const Audit = require('../models/Audit');
 const config = require('../config/config');
+const nodemailer = require('nodemailer');
 
 
 
@@ -115,41 +116,54 @@ const changeStatus = async (req, res) => {
 
 
 
-//
+
 const sendToEmail = async () => {
     try {
+        
+
         const audits = await Audit.find();
 
-        const outputMessage = `
+        if (audits.length > 0) {
+            const outputMessage = `
             <h1>OrderLogs</h1>
-            <h2>File:</h1>
-            <p>${audits}</p>
+            <h2>Logs:</h1>
+            <pre>
+            <code>
+            ${audits}
+            </code>
+            </pre>
+        
         `;
 
-        let transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-                user: config.NODEMAILER_USER,
-                pass: config.NODEMAILER_PASS,
-            },
-        });
+            let transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                    user: config.NODEMAILER_USER,
+                    pass: config.NODEMAILER_PASS,
+                },
+            });
 
-        await transporter.sendMail({
-            from: ` "Tesodev OrderApp OrderLogs File :" ${config.NODEMAILER_USER} `,
-            to: 'brknt.gns@hotmail.com',
-            subject: 'Tesodev OrderApp OrderLogs File ✔',
-            html: outputMessage,
+            await transporter.sendMail({
+                from: ` "Tesodev OrderApp OrderLogs File :" ${config.NODEMAILER_USER} `,
+                to: 'brknt.gns@hotmail.com',
+                subject: 'Tesodev OrderApp OrderLogs File ✔',
+                html: outputMessage,
+                text: outputMessage
 
-        }, (err, info) => {
-            if (err) {
-                console.log("Error:", err);
-            } else {
-                console.log('Message sent: %s', info.messageId);
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-            }
-        });
+            }, (err, info) => {
+                if (err) {
+                    console.log("Error:", err);
+                } else {
+                    console.log('Message sent: %s', info.messageId);
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                }
+            });
+
+        }
+
+
     } catch (error) {
         let errorResponse = utils.Response.errorResponse(error);
         return res.status(errorResponse.code).json(errorResponse);
