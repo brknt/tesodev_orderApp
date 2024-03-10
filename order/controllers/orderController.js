@@ -4,6 +4,34 @@ const Address = require('../models/Address');
 
 
 
+const update = async (req, res) => {
+    try {
+        const data = req.body;
+        const order = await Order.findOne({ _id: req.params.id }).populate('address');
+        if (!order) {
+            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ results: `There is no order` });
+        }
+        order.status = data.status;
+        order.products = data.products;
+        order.price = data.products.reduce((acc, product) => acc + product.price, 0)
+        order.save();
+
+        const address = await Address.findOne({ _id: order.address._id });
+        address.addressLine = data.address.addressLine;
+        address.city = data.address.city;
+        address.country = data.address.country;
+        address.cityCode = data.address.cityCode;
+        address.save();
+
+        return res.json(utils.Response.successResponse({ success: true }, 200));
+
+
+
+    } catch (error) {
+        let errorResponse = utils.Response.errorResponse(error);
+        return res.status(errorResponse.code).json(errorResponse);
+    }
+}
 
 const Delete = async (req, res) => {
     try {
@@ -43,7 +71,7 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-        const [order] = await Order.find({ _id: req.params.id });
+        const [order] = await Order.find({ _id: req.params.id }).populate('address');
         return res.json(utils.Response.successResponse({ success: true, result: order }, 200))
 
     } catch (error) {
@@ -76,9 +104,10 @@ const changeStatus = async (req, res, [id], [status]) => {
 
 
 module.exports = {
-    
-    changeStatus,
+    update,
     getAll,
     getById,
-    Delete
+    Delete,
+    changeStatus
+
 }

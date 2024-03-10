@@ -3,7 +3,8 @@ require('dotenv').config();
 const Order = require('../models/Order');
 const Address = require('../models/Address');
 const config = require('../config/config');
-const utils = require('../../utils/utils');
+const Audit = require('../models/Audit');
+
 
 async function OrderConsumer() {
   console.log("Connecting to RabbitMQ...");
@@ -13,17 +14,14 @@ async function OrderConsumer() {
     const connection = await amqp.connect(amqpServer);
     console.log("Connected to RabbitMQ");
     const channel = await connection.createChannel();
-    await channel.assertQueue("ORDER");
+    await channel.assertQueue("orders");
 
     //consume:
     channel.consume("orders", async (data) => {
 
       console.log("Consuming ORDER service");
-      const {  products, customerId, address, orderId } = JSON.parse(data.content);
+      const { products, customerId, address, orderId } = JSON.parse(data.content);
       const status = "completed";
-      utils.logger.logger.log('info', `consume(orders): orderId: ${orderId}, 
-      customerId: ${customerId}, status: ${status}}`
-      );
       // TODO: LOG ınfo
 
 
@@ -43,30 +41,26 @@ async function OrderConsumer() {
         address: newAddress._id,
       });
 
-      await newOrder.save().then(() => {
-        utils.logger.logger.log('info', `order created successfully: orderId: ${orderId}, 
-        customerId: ${customerId}, status: ${status}}`
-        );
-      }).catch((err) => {
-        utils.logger.logger.log('error', `order created failed:  ${err.message}`
-        );
-      });
+      newOrder.save();
+      console.log(newOrder);
 
+
+      // order create log : audit log
+      const auditLog = await Audit.create({
+        orderId: newOrder._id,
+        price: newOrder.price,
+        status: newOrder.status,
+        address: newOrder.address,
+        products: newOrder.products,
+        customerId: newOrder.customerId,
+        endpoint: "/product/buy => create order"
+      });
+      auditLog.save();
 
 
       // Send ACK to ORDER service
       channel.ack(data);
-      utils.logger.logger.log('info', `Order saved to DB and ACK sent to ORDER queue: orderId: ${orderId}`);
-
-
-      const { customerId: savedCustomerId, products: savedProducts, price,status:savedStatus} = newOrder.toJSON();
-      channel.sendToQueue(
-        "products",
-        Buffer.from(JSON.stringify({ orderId, customerId: savedCustomerId, products: savedProducts, price, status: savedStatus, address: newAddress }))
-      )
-        utils.logger.logger.log('info', `sendToQueue(products): orderId: ${orderId}, 
-        customerId: ${customerId}, status: ${status}`
-        );
+      console.log('log::',auditLog);
 
     });
   } catch (err) {

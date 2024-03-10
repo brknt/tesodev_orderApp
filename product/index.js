@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const amqp = require("amqplib");
 require('dotenv').config();
 const productRoutes = require('./routes/productRoutes');
 const messageBroker = require('./RabbitMQ/messageBroker');
@@ -8,8 +7,11 @@ const cookieParser = require('cookie-parser');
 const config = require('./config/config');
 
 
+
 const app = express();
 const port = config.PORT;
+
+
 
 
 

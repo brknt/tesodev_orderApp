@@ -1,5 +1,7 @@
 const Product = require('../models/Product');
 const { v4: uuidv4 } = require('uuid');
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 const messageBroker = require('../RabbitMQ/messageBroker');
 const utils = require('../../utils/utils');
 
@@ -9,6 +11,8 @@ const utils = require('../../utils/utils');
 
 const create = async (req, res) => {
     try {
+
+       
         const data = req.body; console.log(data);
         const newProduct = await Product.create({
             name: data.name,
