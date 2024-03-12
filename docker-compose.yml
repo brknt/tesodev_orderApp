@@ -1,73 +1,50 @@
-version: "3.9"
+version: '3.9'
 
 services:
   customer:
     build: ./customer
     ports:
-      - "8081:8081"
-    env_file:
-      - ./customer/.env
-    networks:
-      - tesodevNetwork
-
-  mongodb:
-    container_name: "mongodb"
-    image: mongo
-    restart: always
-    ports:
-      - 27017:27017
-    volumes:
-      - mongo_db:/data/db
-
-  rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    container_name: "rabbitmq"
-    ports:
-      - 5672:5672
-      - 15672:15672
-    volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
-    networks:
-      - tesodevNetwork
+      - '8081:8081'
+    depends_on:
+      - mongoDB
 
   order:
     build: ./order
     ports:
-      - "8083:8083"
+      - '8083:8083'
     depends_on:
-      - rabbitmq
-    environment:
-      - RABBITMQ_URL=amqp://rabbitmq:5672
-    env_file:
-      - ./order/.env
-    networks:
-      - tesodevNetwork
+      - mongoDB
 
   product:
     build: ./product
     ports:
-      - "8082:8082"
+      - '8082:8082'
     depends_on:
-      - rabbitmq
-    environment:
-      - RABBITMQ_URL=amqp://rabbitmq:5672
-    env_file:
-      - ./product/.env
-    networks:
-      - tesodevNetwork
-
+      - mongoDB
   api-gateway:
     build: ./api-gateway
     ports:
-      - "8080:8080"
-    environment:
-      - RABBITMQ_URL=amqp://rabbitmq:5672
-    networks:
-      - tesodevNetwork
+      - '8080:8080'
+    depends_on:
+      - mongoDB
 
-networks:
-  tesodevNetwork:
+  mongoDB:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 2720:27017
+    volumes:
+      - mongo_db:/data/db
+
+  rabbitMQ:
+    image: rabbitmq:3.13.0
+    ports:
+      - 5678:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
 
 volumes:
-  mongo_db:
+  mongo_db: {}

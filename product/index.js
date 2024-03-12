@@ -21,7 +21,7 @@ mongoose.connect(config.MONGO_URI, {
 }).then(() => {
     console.log('Product DB connection successful');
 
-}).catch(() => {
+}).catch((err) => {
     console.log(`Product DB connection failed error = ${err}`);
 
 });

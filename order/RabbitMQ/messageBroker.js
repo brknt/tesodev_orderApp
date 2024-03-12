@@ -12,7 +12,7 @@ async function OrderConsumer() {
   try {
     const amqpServer = config.RABBITMQ_URI;
     const connection = await amqp.connect(amqpServer);
-    console.log("Connected to RabbitMQ");
+    console.log("Order Connected to RabbitMQ");
     const channel = await connection.createChannel();
     await channel.assertQueue("orders");
 

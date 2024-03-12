@@ -9,10 +9,10 @@ const app = express();
 const port = config.PORT;
 
 
+console.log('customer:::::',config.MONGO_URI);
+
 //CONNECT MONGODB
-mongoose.connect(config.MONGO_URI, {
-    useNewUrlParser: true
-}).then(() => {
+mongoose.connect(config.MONGO_URI).then(() => {
     console.log('Customer DB connection successful');
 }).catch((err) => {
     console.log(`Customer DB connection failed error = ${err}`);

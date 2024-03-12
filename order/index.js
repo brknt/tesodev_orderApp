@@ -26,7 +26,7 @@ mongoose.connect(config.MONGO_URI, {
 //CRON SCHEDULE (midnight every day)
 cron.schedule("*/10 * * * * *", function () {//0 0 * * *
     console.log("------------------------");
-    sendToEmail();
+    //sendToEmail();
     console.log("Running task at everyday");
 })
 
