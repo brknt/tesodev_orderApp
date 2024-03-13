@@ -9,13 +9,17 @@ const Audit = require('../models/Audit');
 async function OrderConsumer() {
   console.log("Connecting to RabbitMQ...");
 
-  try {
-    const amqpServer = config.RABBITMQ_URI;
-    const connection = await amqp.connect(amqpServer);
-    console.log("Order Connected to RabbitMQ");
-    const channel = await connection.createChannel();
-    await channel.assertQueue("orders");
 
+
+
+  try {
+    
+      const amqpServer = config.RABBITMQ_URI;
+      const connection = await amqp.connect(amqpServer);
+      console.log("Order Connected to RabbitMQ");
+      const channel = await connection.createChannel();
+      await channel.assertQueue("orders");
+    
     //consume:
     channel.consume("orders", async (data) => {
 
@@ -60,10 +64,11 @@ async function OrderConsumer() {
 
       // Send ACK to ORDER service
       channel.ack(data);
-      console.log('log::',auditLog);
+      console.log('log::', auditLog);
 
     });
-  } catch (err) {
+  } catch (err) {console.log('burdaaa',err);
+  
     console.error("Failed to connect to RabbitMQ:", err.message);
   }
 

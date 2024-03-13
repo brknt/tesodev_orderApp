@@ -24,19 +24,17 @@ mongoose.connect(config.MONGO_URI, {
 
 
 //CRON SCHEDULE (midnight every day)
-cron.schedule("*/10 * * * * *", function () {//0 0 * * *
+cron.schedule("0 0 * * *", function () {//0 0 * * *
     console.log("------------------------");
-    //sendToEmail();
+    sendToEmail();
     console.log("Running task at everyday");
 })
 
 
 
 //MIDDLEWARE
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 
 
@@ -44,7 +42,9 @@ app.use(express.json());
 messageBroker.OrderConsumer();
 
 
-app.use('/order', orderRoutes.routes);
+
+
+app.use('/', orderRoutes.routes);
 
 
 

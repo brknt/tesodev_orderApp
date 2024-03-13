@@ -9,7 +9,6 @@ const isAuthenticated = require('../middlewares/isAuthenticated');
 router.post('/create', productController.create);
 router.get('/', productController.getAll);
 router.post('/buy', isAuthenticated, productController.createOrder);
-router.patch('/update', isAuthenticated, productController.createOrder);
 
 
 

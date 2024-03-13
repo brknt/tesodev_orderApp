@@ -37,7 +37,7 @@ app.use(cookieParser());
 
 
 //Routes
-app.use('/product', productRoutes.routes);
+app.use('/', productRoutes.routes);
 
 
 
