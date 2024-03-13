@@ -8,10 +8,14 @@ const config = require('./config/config');
 
 const app = express();
 const port = config.PORT;
+let MONGO_URI = config.MONGO_URI ;
 
-
+if (process.env.NODE_ENV === 'test') {
+    MONGO_URI = "mongodb://localhost/customerDB"  
+  }
+  
 //CONNECT MONGODB
-mongoose.connect(config.MONGO_URI).then(() => {
+mongoose.connect(MONGO_URI).then(() => {
     console.log('Customer DB connection successful');
 }).catch((err) => {
     console.log(`Customer DB connection failed error = ${err}`);

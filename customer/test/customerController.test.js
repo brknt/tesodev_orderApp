@@ -128,6 +128,7 @@ describe('Customer Authenticatiton', async () => {
         });
     });
 
+
     describe('GET /:id', () => {
         it('should get  a customer with id', (done) => {
             chai
@@ -156,6 +157,7 @@ describe('Customer Authenticatiton', async () => {
         });
     });
 
+
     describe('POST /login', () => {
         it('should return a JWT token for a valid user', (done) => {
             const customer = {
@@ -182,7 +184,7 @@ describe('Customer Authenticatiton', async () => {
             chai
                 .request(app)
                 .post('/login')
-                .send({email:'invalidCustomer',password:'invalidPassword'})
+                .send({ email: 'invalidCustomer', password: 'invalidPassword' })
                 .end((err, res) => {
                     expect(res).to.have.status(401);
                     expect(res.body).to.have.property("result", "Invalid email or password");
@@ -193,7 +195,7 @@ describe('Customer Authenticatiton', async () => {
             chai
                 .request(app)
                 .post('/login')
-                .send({email:'test@gmail.com',password:'wrongPassword'})
+                .send({ email: 'test@gmail.com', password: 'wrongPassword' })
                 .end((err, res) => {
                     expect(res).to.have.status(401);
                     expect(res.body).to.have.property("result", "Invalid email or password");
@@ -201,6 +203,8 @@ describe('Customer Authenticatiton', async () => {
                 });
         });
     });
+
+
     describe('DELETE /delete/:id', () => {
         it('should delete a customer', (done) => {
             chai
@@ -226,6 +230,6 @@ describe('Customer Authenticatiton', async () => {
         });
     });
 
- 
+
 
 });
