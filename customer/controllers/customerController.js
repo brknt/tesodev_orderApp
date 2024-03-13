@@ -115,7 +115,7 @@ const getById = async (req, res) => {
         const [customer] = await Customer.find({ _id: req.params.id });
         
         if (!customer) {
-            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ results: `There is no customer` });
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: `There is no customer registered` });
 
         }
         
@@ -134,12 +134,12 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const customer = await Customer.findOne({ email });
         if (!customer) {
-            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ results: `Invalid username or password` });
+            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ result: `Invalid email or password` });
 
         }
         const compare = await bcrypt.compare(password, customer.password);
         if (!compare) {
-            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ results: `Invalid username or password` });
+            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ result: `Invalid email or password` });
         }
 
 

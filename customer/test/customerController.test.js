@@ -115,17 +115,103 @@ describe('Customer Authenticatiton', async () => {
         })
     });
 
+
+    describe('GET /', () => {
+        it('should getAll customer', (done) => {
+            chai
+                .request(app)
+                .get('/')
+                .then((res) => {
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+    });
+
+    describe('GET /:id', () => {
+        it('should get  a customer with id', (done) => {
+            chai
+                .request(app)
+                .get(`/${customerId}`)
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.have.property("code");
+                    expect(res.body).to.have.property("data");
+                    expect(res.body.data).to.have.property("success", true);
+                    expect(res.body.data).to.have.property("result");
+                    done();
+                });
+        });
+
+        it('If no such customer exists it should an error', (done) => {
+            chai
+                .request(app)
+                .get(`/${customerId}non-id`)
+                .end((err, res) => {
+                    expect(res).to.have.status(400);
+                    expect(res.body).to.have.property("result", "There is no customer registered");
+                    done();
+                });
+        });
+    });
+
+    describe('POST /login', () => {
+        it('should return a JWT token for a valid user', (done) => {
+            const customer = {
+                email: "test@gmail.com",
+                password: "test1234update",
+            }
+
+            chai
+                .request(app)
+                .post('/login')
+                .send(customer)
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.have.property("code");
+                    expect(res.body).to.have.property("data");
+                    expect(res.body.data).to.have.property("success", true);
+                    expect(res.body.data).to.have.property("token");
+                    done();
+                });
+        });
+
+        it('should return an error for an invalid customer', (done) => {
+            chai
+                .request(app)
+                .post('/login')
+                .send({email:'invalidCustomer',password:'invalidPassword'})
+                .end((err, res) => {
+                    expect(res).to.have.status(401);
+                    expect(res.body).to.have.property("result", "Invalid email or password");
+                    done();
+                });
+        });
+        it('should return an error for an incorrect password', (done) => {
+            chai
+                .request(app)
+                .post('/login')
+                .send({email:'test@gmail.com',password:'wrongPassword'})
+                .end((err, res) => {
+                    expect(res).to.have.status(401);
+                    expect(res.body).to.have.property("result", "Invalid email or password");
+                    done();
+                });
+        });
+    });
     describe('DELETE /delete/:id', () => {
         it('should delete a customer', (done) => {
             chai
                 .request(app)
                 .delete(`/delete/${customerId}`)
-            .end((err, res) => {
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.a('object');
-                expect(res.body.data).to.have.property("success", true);
-                done();
-            });
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body.data).to.have.property("success", true);
+                    done();
+                });
         });
 
         it('If no such customer exists it should an error', (done) => {
@@ -139,5 +225,7 @@ describe('Customer Authenticatiton', async () => {
                 });
         });
     });
+
+ 
 
 });
