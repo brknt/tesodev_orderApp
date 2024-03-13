@@ -12,8 +12,9 @@ const app = express();
 const port = config.PORT;
 
 
-
-
+if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
+    MONGO_URI = "mongodb://localhost/productDB"  
+  }
 
 //CONNECT MONGODB
 mongoose.connect(config.MONGO_URI, {

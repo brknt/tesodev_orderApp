@@ -10,7 +10,7 @@ const app = express();
 const port = config.PORT;
 let MONGO_URI = config.MONGO_URI ;
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
     MONGO_URI = "mongodb://localhost/customerDB"  
   }
   
