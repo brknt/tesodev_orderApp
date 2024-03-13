@@ -65,7 +65,7 @@ describe('Customer Authenticatiton', async () => {
         });
     });
 
-    describe(`PATCH /update/:id`, () => {
+    describe('PATCH /update/:id', () => {
         it('should update a customer', (done) => {
             const customer = {
                 name: "testnameupdate",
@@ -113,6 +113,31 @@ describe('Customer Authenticatiton', async () => {
                     done();
                 })
         })
-    })
+    });
+
+    describe('DELETE /delete/:id', () => {
+        it('should delete a customer', (done) => {
+            chai
+                .request(app)
+                .delete(`/delete/${customerId}`)
+            .end((err, res) => {
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.data).to.have.property("success", true);
+                done();
+            });
+        });
+
+        it('If no such customer exists it should an error', (done) => {
+            chai
+                .request(app)
+                .delete(`/delete/${customerId}non-id`)
+                .end((err, res) => {
+                    expect(res).to.have.status(400);
+                    expect(res.body).to.have.property("result", "There is no customer registered");
+                    done();
+                });
+        });
+    });
 
 });
