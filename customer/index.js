@@ -1,15 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const customerRoutes = require('./routes/customerRoutes');
 const cookieParser = require('cookie-parser');
+const customerRoutes = require('./routes/customerRoutes');
 const config = require('./config/config');
+
 
 const app = express();
 const port = config.PORT;
 
-
-console.log('customer:::::',config.MONGO_URI);
 
 //CONNECT MONGODB
 mongoose.connect(config.MONGO_URI).then(() => {
@@ -26,9 +25,9 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-
 //Routes
-app.use('/customer', customerRoutes.routes);
+app.use('/', customerRoutes.routes);
+
 
 
 
@@ -37,3 +36,5 @@ app.use('/customer', customerRoutes.routes);
 app.listen(port, () => {
     console.log(`Customer-service started on port: ${port}`);
 })
+
+module.exports =  app;

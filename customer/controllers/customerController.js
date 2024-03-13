@@ -11,11 +11,11 @@ const utils = require('../utils/utils');
 //register
 const create = async (req, res) => {
     try {
-
+        
         const data = req.body;
         const customerExists = await Customer.findOne({ email: data.email });
         if (customerExists) {
-            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ results: "Such a user already exists!" });
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: "Such a customer already exists!" });
 
         } else {
 
@@ -29,7 +29,7 @@ const create = async (req, res) => {
 
             await newCustomer.save();
 
-            return res.json(utils.Response.successResponse({ success: true, result: newCustomer._id }, 201));
+            return res.status(utils.Enum.HTTP_CODES.CREATED).json(utils.Response.successResponse({ success: true, result: newCustomer._id }, 201));
 
         }
 
@@ -44,11 +44,12 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
 
+
         const data = req.body;
         const customer = await Customer.findOne({ _id: req.params.id }).populate('address');
 
         if (!customer) {
-            return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ results: `There is no customer registered to ${data.email}` });
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: `There is no customer registered to ${data.email}` });
         } else {
             customer.name = data.name;
             customer.password = data.password;
@@ -58,10 +59,10 @@ const update = async (req, res) => {
             address.city = data.address.city;
             address.country = data.address.country;
             address.cityCode = data.address.cityCode;
-            address.save();
-            customer.save();
+            await address.save();
+            await customer.save();
 
-            return res.json(utils.Response.successResponse({ success: true }, 200));
+            return res.json(utils.Response.successResponse({ success: true}, 200));
 
         }
 
@@ -97,6 +98,7 @@ const Delete = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
+    
         const customers = await Customer.find();
         return res.json(utils.Response.successResponse({ success: true, result: customers }, 200))
 
@@ -109,9 +111,18 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
+    
         const [customer] = await Customer.find({ _id: req.params.id });
-        return res.json(utils.Response.successResponse({ success: true, result: customer }, 200))
+        
+        if (!customer) {
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ results: `There is no customer` });
 
+        }
+        
+            return res.json(utils.Response.successResponse({ success: true, result: customer }, 200))
+        
+        
+        
     } catch (error) {
         let errorResponse = utils.Response.errorResponse(error);
         return res.status(errorResponse.code).json(errorResponse);
@@ -177,8 +188,10 @@ const joiValidate = async (req, res, next) => {
 
 }
 
-
-
+// delete customer for test
+const deleteTestCustomer = async ()=>{
+    await Customer.deleteMany({email:'test@gmail.com'});
+}
 
 module.exports = {
     create,
@@ -187,5 +200,6 @@ module.exports = {
     getAll,
     getById,
     joiValidate,
-    login
+    login,
+    deleteTestCustomer
 }

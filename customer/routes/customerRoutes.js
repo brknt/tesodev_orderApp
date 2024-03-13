@@ -7,8 +7,8 @@ router.post("/create",customerController.joiValidate,customerController.create);
 router.patch("/update/:id",customerController.update);
 router.delete("/delete/:id",customerController.Delete);
 router.get("/",customerController.getAll);
-router.get("/:id",customerController.getById);
 router.post("/login",customerController.login);
+router.get("/:id",customerController.getById);
 
 
 module.exports = {
