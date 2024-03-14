@@ -17,10 +17,7 @@ async function connect() {
 
   setTimeout(async () => {
     try {
-      console.log('1RABBITMQ_URI:::>>>',RABBITMQ_URI);
       const connection = await amqp.connect(RABBITMQ_URI);
-      console.log('2RABBITMQ_URI:::>>>',RABBITMQ_URI);
-      
       channel = await connection.createChannel();
       await channel.assertQueue("products");
       console.log("Product RabbitMQ connected");
@@ -28,7 +25,7 @@ async function connect() {
       console.error("Failed to connect to RabbitMQ:", err);
     }
 
-  }, 5000);
+  }, 15000);
 
 
 

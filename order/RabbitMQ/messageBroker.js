@@ -18,12 +18,12 @@ if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
 async function OrderConsumer() {
   console.log("Connecting to RabbitMQ...");
 
-
-  try {
+  setTimeout(async ()=>{
+    try {
     
       const amqpServer = RABBITMQ_URI;
       const connection = await amqp.connect(amqpServer);
-      console.log("Order Connected to RabbitMQ");
+      console.log("Order RabbitMQ connected");
       const channel = await connection.createChannel();
       await channel.assertQueue("orders");
     
@@ -79,6 +79,9 @@ async function OrderConsumer() {
     console.error("Failed to connect to RabbitMQ:", err.message);
   }
 
+
+  },15000);
+ 
 }
 
 

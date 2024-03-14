@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.2'
 
 services:
 
@@ -9,6 +9,7 @@ services:
       - '8081:8081'
     depends_on:
       - mongoDB
+    
 
 
 #order
@@ -53,9 +54,10 @@ services:
 #rabbitmq
   rabbitMQ:
     image: rabbitmq:3.8-management-alpine
+    container_name: 'rabbitMQ'
     ports:
-      - 5672:5672
-      - 15672:15672
+      - 5673:5672
+      - 15673:15672
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq

@@ -31,6 +31,9 @@ mongoose.connect(MONGO_URI, {
 //CONNECT RABBITMQ
 messageBroker.connect();
 
+
+
+
 //MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
