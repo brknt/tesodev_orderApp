@@ -39,11 +39,13 @@
 
 ### on Docker
 (_If there are no .env files in the customer, order, and product directories, they need to be added. They have been added for now._)
+
 1. Run `docker-compose build`
 2. Run `docker-compose up`. Now you can test the APIs from localhost:8080
 
 ### on Localhost
 (_If there are no .env files in the customer, order, and product directories, they need to be added. They have been added for now._)
+
 2. Run `npm install` in `customer`, `order`, `product` and `api-gateway` directories.
 3. Then run `npm run start:dev` in the customer, order, product and api-gateway directories to run it. And you can test it from localhost:8080.
 
