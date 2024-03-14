@@ -80,7 +80,7 @@ async function OrderConsumer() {
   }
 
 
-  },15000);
+  },20000); // delay 20 sn
  
 }
 

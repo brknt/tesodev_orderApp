@@ -25,7 +25,7 @@ async function connect() {
       console.error("Failed to connect to RabbitMQ:", err);
     }
 
-  }, 15000);
+  }, 20000); // delay 20 second
 
 
 
