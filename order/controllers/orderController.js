@@ -100,12 +100,12 @@ const changeStatus = async (req, res) => {
 
         const order = await Order.findOne({ _id: req.params.id });
         if (!order) {
-            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ results: `Cannot update order status` });
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: `Cannot update order status` });
 
         }
         order.status = data.status;
         order.save();
-        //return res.json(utils.Response.successResponse({ success: true }, 200));
+        return res.json(utils.Response.successResponse({ success: true }, 200));
 
     } catch (error) {
         let errorResponse = utils.Response.errorResponse(error);
