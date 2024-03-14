@@ -10,6 +10,7 @@ services:
     depends_on:
       - mongoDB
 
+
 #order
   order:
     build: ./order
@@ -17,6 +18,8 @@ services:
       - '8083:8083'
     depends_on:
       - mongoDB
+      - rabbitMQ
+
 
 #product
   product:
@@ -25,6 +28,8 @@ services:
       - '8082:8082'
     depends_on:
       - mongoDB
+      - rabbitMQ
+
 
 #api-gateway
   api-gateway:
@@ -33,6 +38,7 @@ services:
       - '8080:8080'
     depends_on:
       - mongoDB
+
 
 #mongodb
   mongoDB:
@@ -43,6 +49,7 @@ services:
     volumes:
       - mongo_db:/data/db
 
+
 #rabbitmq
   rabbitMQ:
     image: rabbitmq:3.8-management-alpine
@@ -52,6 +59,7 @@ services:
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
       - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+
 
 
 volumes:

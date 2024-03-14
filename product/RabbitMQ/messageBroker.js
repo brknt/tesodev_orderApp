@@ -6,14 +6,20 @@ require('dotenv').config();
 
 // ---------------connect rabbitmq--------------------
 let channel;
+let RABBITMQ_URI = config.RABBITMQ_URI;
+
+if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
+  RABBITMQ_URI = "amqp://127.0.0.1:5672"  
+}
+
 async function connect() {
   console.log("Connecting to RabbitMQ...");
 
   setTimeout(async () => {
     try {
-      console.log('1RABBITMQ_URI:::>>>',config.RABBITMQ_URI);
-      const connection = await amqp.connect(config.RABBITMQ_URI);
-      console.log('2RABBITMQ_URI:::>>>',config.RABBITMQ_URI);
+      console.log('1RABBITMQ_URI:::>>>',RABBITMQ_URI);
+      const connection = await amqp.connect(RABBITMQ_URI);
+      console.log('2RABBITMQ_URI:::>>>',RABBITMQ_URI);
       
       channel = await connection.createChannel();
       await channel.assertQueue("products");

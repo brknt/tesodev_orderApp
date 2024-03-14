@@ -6,15 +6,22 @@ const config = require('../config/config');
 const Audit = require('../models/Audit');
 
 
+
+
+
+let RABBITMQ_URI = config.RABBITMQ_URI;
+
+if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
+  RABBITMQ_URI = "amqp://127.0.0.1:5672"  
+}
+
 async function OrderConsumer() {
   console.log("Connecting to RabbitMQ...");
 
 
-
-
   try {
     
-      const amqpServer = config.RABBITMQ_URI;
+      const amqpServer = RABBITMQ_URI;
       const connection = await amqp.connect(amqpServer);
       console.log("Order Connected to RabbitMQ");
       const channel = await connection.createChannel();

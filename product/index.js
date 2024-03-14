@@ -11,13 +11,13 @@ const config = require('./config/config');
 const app = express();
 const port = config.PORT;
 
-
+let MONGO_URI = config.MONGO_URI;
 if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
     MONGO_URI = "mongodb://localhost/productDB"  
   }
 
 //CONNECT MONGODB
-mongoose.connect(config.MONGO_URI, {
+mongoose.connect(MONGO_URI, {
     useNewUrlParser: true
 }).then(() => {
     console.log('Product DB connection successful');

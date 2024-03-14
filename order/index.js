@@ -11,13 +11,14 @@ const { sendToEmail } = require('./controllers/orderController.js');
 const app = express();
 const port = config.PORT;
 
+let MONGO_URI = config.MONGO_URI;
 
 if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
     MONGO_URI = "mongodb://localhost/orderDB"  
   }
 
 //CONNECT MONGODB
-mongoose.connect(config.MONGO_URI, {
+mongoose.connect(MONGO_URI, {
 }).then(() => {
     console.log('Order DB connection successful');
 }).catch((err) => {
