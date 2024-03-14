@@ -1,0 +1,752 @@
+{
+	"info": {
+		"_postman_id": "57987309-c582-4fb9-904f-8351cd02b201",
+		"name": "Tesodev OrderApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18180848"
+	},
+	"item": [
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "create customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"yenikayıt3\",\n    \"email\":\"yeni3@gmail.com\",\n    \"password\":\"1234pass2\",\n    \"address\":{\n        \"addressLine\":\"line3\",\n        \"city\":\"city3\",\n        \"country\":\"country3\",\n        \"cityCode\":1233\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/customer/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"customer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update customer",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"yenikayıtupdatessdsd\",\n    \"email\":\"yeniupdatasdasde@gmail.com\",\n    \"password\":\"1234passupdsadasdate\",\n    \"address\":{\n        \"addressLine\":\"line1asdadupdate\",\n        \"city\":\"city1asdasdpdate\",\n        \"country\":\"country1update\",\n        \"cityCode\":12314\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/customer/update/8e5ef50f-7733-4250-9809-a2f1a3b8322b",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"customer",
+								"update",
+								"8e5ef50f-7733-4250-9809-a2f1a3b8322b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete customer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/customer/delete/8382e6ad-4bf6-4e73-923a-ea723cc903c5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"delete",
+								"8382e6ad-4bf6-4e73-923a-ea723cc903c5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/customer",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/customer/06256c90-1a82-4322-8ada-7e07ea83b112",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"customer",
+								"06256c90-1a82-4322-8ada-7e07ea83b112"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"yeni3@gmail.com\",\n    \"password\":\"1234pass2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8081/customer/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"customer",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout customer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8081/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "create product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"Product1\",\n    \"price\":13.5,\n    \"imageUrl\":\"url1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buy product >create order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \n    \"address\":{\n        \"addressLine\":\"line4\",\n        \"city\":\"city4\",\n        \"country\":\"country4\",\n        \"cityCode\":1233\n    },\n    \"ids\":[\n        {\"_id\":\"d29a2c7e-1d58-4e68-91b4-b4b0a3286fcd\"},\n        {\"_id\":\"7d0b624a-36d3-4408-be0f-5c6bd4371ccb\"}\n        ]   \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/buy",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"buy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "update order",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"deneme\",\n    \"address\": {\n        \"addressLine\": \"line3\",\n        \"city\": \"city3\",\n        \"country\": \"country5\",\n        \"cityCode\": 1233\n    },\n    \"products\": [\n        {\n            \"_id\": \"64fdfda2-093d-4439-ac5b-cfdf354e6663\",\n            \"name\": \"Product6\",\n            \"price\": 13.5,\n            \"imageUrl\": \"urlllll2\",\n            \"__v\": 0\n        },\n          {\n                \"_id\": \"72164463-6d6f-497b-8a24-ce8bdf622ef6\",\n                \"name\": \"Product5\",\n                \"price\": 123.5,\n                \"imageUrl\": \"urlllll2\",\n                \"__v\": 0\n            }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/update/8c8d5256-8f0a-4449-9249-80f3c49d79c1",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"update",
+								"8c8d5256-8f0a-4449-9249-80f3c49d79c1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\":\"completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8083/changeStatus/b2f8fa68-41e1-483e-9cf5-21311e5ee7e8",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"changeStatus",
+								"b2f8fa68-41e1-483e-9cf5-21311e5ee7e8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/16ae3b50-5927-49e5-8a19-41a3de6d39f3",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"16ae3b50-5927-49e5-8a19-41a3de6d39f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8083/delete/aba63d49-b0ee-4d38-bcc0-2b5ea343da33",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"delete",
+								"aba63d49-b0ee-4d38-bcc0-2b5ea343da33"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "api-gateway",
+			"item": [
+				{
+					"name": "customer",
+					"item": [
+						{
+							"name": "create customer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"yenikayıt3\",\n    \"email\":\"yeni3@gmail.com\",\n    \"password\":\"1234pass2\",\n    \"address\":{\n        \"addressLine\":\"line3\",\n        \"city\":\"city3\",\n        \"country\":\"country3\",\n        \"cityCode\":1233\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8081/customer/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"customer",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update customer",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"yenikayıtupdatessdsd\",\n    \"email\":\"yeniupdatasdasde@gmail.com\",\n    \"password\":\"1234passupdsadasdate\",\n    \"address\":{\n        \"addressLine\":\"line1asdadupdate\",\n        \"city\":\"city1asdasdpdate\",\n        \"country\":\"country1update\",\n        \"cityCode\":12314\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8081/customer/update/8e5ef50f-7733-4250-9809-a2f1a3b8322b",
+									"host": [
+										"localhost"
+									],
+									"port": "8081",
+									"path": [
+										"customer",
+										"update",
+										"8e5ef50f-7733-4250-9809-a2f1a3b8322b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete customer",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/customer/delete/8382e6ad-4bf6-4e73-923a-ea723cc903c5",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"customer",
+										"delete",
+										"8382e6ad-4bf6-4e73-923a-ea723cc903c5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get customer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/customer",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"customer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById customer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/customer/f8823e89-2316-4531-9b9e-272a28d3b717",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"customer",
+										"f8823e89-2316-4531-9b9e-272a28d3b717"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login customer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"yeni1@gmail.com\",\n    \"password\":\"1234passupdate\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/customer/login",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"customer",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "logout customer",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/customer/logout",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"customer",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "create product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Product4\",\n    \"price\":28.2,\n    \"imageUrl\":\"url4\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8082/create",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/product",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "buy product >create order Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \n    \"address\":{\n        \"addressLine\":\"line4\",\n        \"city\":\"city4\",\n        \"country\":\"country4\",\n        \"cityCode\":1233\n    },\n    \"ids\":[\n        {\"_id\":\"d29a2c7e-1d58-4e68-91b4-b4b0a3286fcd\"},\n        {\"_id\":\"7d0b624a-36d3-4408-be0f-5c6bd4371ccb\"}\n        ]   \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8082/buy",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"buy"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "order",
+					"item": [
+						{
+							"name": "update order",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": \"deneme\",\n    \"address\": {\n        \"addressLine\": \"line3\",\n        \"city\": \"city3\",\n        \"country\": \"country5\",\n        \"cityCode\": 1233\n    },\n    \"products\": [\n        {\n            \"_id\": \"64fdfda2-093d-4439-ac5b-cfdf354e6663\",\n            \"name\": \"Product6\",\n            \"price\": 13.5,\n            \"imageUrl\": \"urlllll2\",\n            \"__v\": 0\n        },\n          {\n                \"_id\": \"72164463-6d6f-497b-8a24-ce8bdf622ef6\",\n                \"name\": \"Product5\",\n                \"price\": 123.5,\n                \"imageUrl\": \"urlllll2\",\n                \"__v\": 0\n            }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8083/update/8c8d5256-8f0a-4449-9249-80f3c49d79c1",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"update",
+										"8c8d5256-8f0a-4449-9249-80f3c49d79c1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change status",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\":\"completed\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8083/changeStatus/b2f8fa68-41e1-483e-9cf5-21311e5ee7e8",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"changeStatus",
+										"b2f8fa68-41e1-483e-9cf5-21311e5ee7e8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get orders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8083/",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8083/c34c9955-11e7-41ac-989e-21ba5b3d5ebc",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"c34c9955-11e7-41ac-989e-21ba5b3d5ebc"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete order",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8083/delete/aba63d49-b0ee-4d38-bcc0-2b5ea343da33",
+									"host": [
+										"localhost"
+									],
+									"port": "8083",
+									"path": [
+										"delete",
+										"aba63d49-b0ee-4d38-bcc0-2b5ea343da33"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

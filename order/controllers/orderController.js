@@ -80,7 +80,10 @@ const getById = async (req, res) => {
     try {
 
         const [order] = await Order.find({ _id: req.params.id }).populate('address');
-        console.log(order);
+        if(!order){
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ results: `There is no order ` });
+        }
+
 
         return res.json(utils.Response.successResponse({ success: true, result: order }, 200))
 
@@ -96,7 +99,7 @@ const changeStatus = async (req, res) => {
     try {
 
         const data = req.body;
-        console.log(data);
+    
 
         const order = await Order.findOne({ _id: req.params.id });
         if (!order) {

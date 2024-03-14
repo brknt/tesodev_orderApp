@@ -33,7 +33,7 @@
 
 ## Postman
 - Requires Postman to run the APIs
-- Use `tesodevOrderApp demo.postman_collection.json` from the repo root and import in your postman.
+- Use `Tesodev OrderApp.postman_collection.json` from the repo root and import in your postman.
 
 ## Installation and run steps
 

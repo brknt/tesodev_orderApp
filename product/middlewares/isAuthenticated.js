@@ -10,14 +10,14 @@ const autheticateToken = async (req, res, next) => {
     if (token) {
       jwt.verify(token, config.JWT_SECRET, (err, decodedToken) => {
         if (err) {
-          return res.status(401).json({ message: 'Unauthorized' });
+          return res.status(401).json({ message: 'Unauthorized.Please Login' });
         } else {
           req.user = decodedToken;
           next();
         }
       });
     } else {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'Unauthorized.Please Login' });
     }
 
   } catch (error) {
