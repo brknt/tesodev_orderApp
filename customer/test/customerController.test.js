@@ -204,6 +204,23 @@ describe('Customer Authenticatiton', async () => {
         });
     });
 
+    describe('GET /logout', () => {
+        it('It is a logout for a valid user and the cookie should be cleared.', (done) => {
+            chai
+                .request(app)
+                .get('/logout')
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.have.property("code");
+                    expect(res.body).to.have.property("data");
+                    expect(res.body.data).to.have.property("success", true);
+                    expect(res.body.data).to.have.property("result","logout");
+                    done();
+                });
+        });
+    });
+
 
     describe('DELETE /delete/:id', () => {
         it('should delete a customer', (done) => {
