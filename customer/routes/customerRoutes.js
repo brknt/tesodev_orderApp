@@ -8,6 +8,7 @@ router.patch("/update/:id",customerController.update);
 router.delete("/delete/:id",customerController.Delete);
 router.get("/",customerController.getAll);
 router.post("/login",customerController.login);
+router.get("/logout",customerController.logout);
 router.get("/:id",customerController.getById);
 
 

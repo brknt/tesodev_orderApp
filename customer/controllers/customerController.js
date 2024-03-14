@@ -11,7 +11,7 @@ const utils = require('../utils/utils');
 //register
 const create = async (req, res) => {
     try {
-        
+
         const data = req.body;
         const customerExists = await Customer.findOne({ email: data.email });
         if (customerExists) {
@@ -62,7 +62,7 @@ const update = async (req, res) => {
             await address.save();
             await customer.save();
 
-            return res.json(utils.Response.successResponse({ success: true}, 200));
+            return res.json(utils.Response.successResponse({ success: true }, 200));
 
         }
 
@@ -98,7 +98,6 @@ const Delete = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-    
         const customers = await Customer.find();
         return res.json(utils.Response.successResponse({ success: true, result: customers }, 200))
 
@@ -111,18 +110,18 @@ const getAll = async (req, res) => {
 
 const getById = async (req, res) => {
     try {
-    
+
         const [customer] = await Customer.find({ _id: req.params.id });
-        
+
         if (!customer) {
             return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: `There is no customer registered` });
 
         }
-        
-            return res.json(utils.Response.successResponse({ success: true, result: customer }, 200))
-        
-        
-        
+
+        return res.json(utils.Response.successResponse({ success: true, result: customer }, 200))
+
+
+
     } catch (error) {
         let errorResponse = utils.Response.errorResponse(error);
         return res.status(errorResponse.code).json(errorResponse);
@@ -163,6 +162,25 @@ const login = async (req, res) => {
         return res.status(errorResponse.code).json(errorResponse);
     }
 }
+
+const logout = async (req, res) => {
+    try {
+       
+
+        res.cookie('jwt', " ", {
+            httpOnly: true,
+            maxAge: 1000 * 60 * 60 * 24
+        });
+
+        
+        
+        return res.json(utils.Response.successResponse({ success: true, result: "logout"}, 200));
+
+    } catch (error) {
+        let errorResponse = utils.Response.errorResponse(error);
+        return res.status(errorResponse.code).json(errorResponse);
+    }
+}
 const joiValidate = async (req, res, next) => {
     try {
         const data = {
@@ -189,8 +207,8 @@ const joiValidate = async (req, res, next) => {
 }
 
 // delete customer for test
-const deleteTestCustomer = async ()=>{
-    await Customer.deleteMany({email:'test@gmail.com'});
+const deleteTestCustomer = async () => {
+    await Customer.deleteMany({ email: 'test@gmail.com' });
 }
 
 module.exports = {
@@ -201,5 +219,6 @@ module.exports = {
     getById,
     joiValidate,
     login,
+    logout,
     deleteTestCustomer
 }
