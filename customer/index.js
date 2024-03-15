@@ -4,6 +4,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const customerRoutes = require('./routes/customerRoutes');
 const config = require('./config/config');
+const Customer = require('./models/Customer');
 
 
 const app = express();
@@ -15,8 +16,18 @@ if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
   }
   
 //CONNECT MONGODB
-mongoose.connect(MONGO_URI).then(() => {
+mongoose.connect(MONGO_URI).then(async() => {
     console.log('Customer DB connection successful');
+   const [admin] = await Customer.find({email:"admin@gmail.com"});   
+    if(!admin){
+        await Customer.create({
+            name:"admin",
+            email:"admin@gmail.com",
+            password:"admin",
+            role:"admin" 
+        });
+    }
+
 }).catch((err) => {
     console.log(`Customer DB connection failed error = ${err}`);
 

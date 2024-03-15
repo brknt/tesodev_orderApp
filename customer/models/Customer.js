@@ -20,6 +20,11 @@ var CustomerSchema = new mongoose.Schema({
         required: true
 
     },
+    role:{
+        type: String,
+        enum: ["customer","admin"],
+        default: "customer"
+      },
     password: {
         type: String,
         required: true

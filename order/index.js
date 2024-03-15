@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const messageBroker = require('./RabbitMQ/messageBroker');
+const cookieParser = require('cookie-parser');
 const config = require('./config/config');
 const orderRoutes = require('./routes/orderRoutes');
 const cron = require('node-cron');
@@ -40,6 +41,7 @@ cron.schedule("0 0 * * *", function () {//0 0 * * *
 //MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 
 

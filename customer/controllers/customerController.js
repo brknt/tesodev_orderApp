@@ -44,7 +44,6 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
 
-
         const data = req.body;
         const customer = await Customer.findOne({ _id: req.params.id }).populate('address');
 
@@ -140,11 +139,10 @@ const login = async (req, res) => {
         if (!compare) {
             return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ result: `Invalid email or password` });
         }
-
-
-
+        
         const payload = {
-            id: customer._id
+            id: customer._id,
+            role:customer.role
         };
         const token = jwt.sign(payload, config.JWT_SECRET, {
             expiresIn: '1d'
@@ -153,7 +151,6 @@ const login = async (req, res) => {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24
         });
-
 
         return res.json(utils.Response.successResponse({ success: true, token: token }, 200));
 

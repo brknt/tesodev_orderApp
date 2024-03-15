@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
-const isAuthenticated = require('../middlewares/isAuthenticated');
+const roleMiddleware = require('../middlewares/roleMiddleware');
 
 
 
-
-router.post('/create', productController.create);
-router.get('/', productController.getAll);
-router.post('/buy', isAuthenticated, productController.createOrder);
+router.post('/create', roleMiddleware(["customer", "admin"]), productController.create);
+router.get('/',  productController.getAll);
+router.post('/buy', roleMiddleware("customer"), productController.createOrder);
 
 
 

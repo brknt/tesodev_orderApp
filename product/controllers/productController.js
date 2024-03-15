@@ -10,8 +10,7 @@ const utils = require('../utils/utils');
 const create = async (req, res) => {
     try {
 
-       
-        const data = req.body; console.log(data);
+        const data = req.body;
         const newProduct = await Product.create({
             name: data.name,
             price: data.price,
@@ -45,10 +44,13 @@ const createOrder = async (req, res) => {
         const data = req.body;
         const { ids } = data;
         const products = await Product.find({ _id: { $in: ids } });
+        if (products.length < 1) {
+            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: `There is no such product` });
+        }
+
         // console.log("ids::",ids);
         // console.log("products::",products);
         // console.log("customerId::",req.user.id);
-
         const orderId = uuidv4();
         const ordersMap = new Map();
 
