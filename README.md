@@ -4,6 +4,8 @@
 
 ## This project currently, has three micro-services:
 
+> **_NOTE:_**  customer service adds admin user to database on startup.(email:admin@gmail.com,password:admin)
+
 - #### Customer
 - POST /create  (register customer)
 - PATCH /update (update customer)
@@ -11,6 +13,7 @@
 - GET / (get all customer)
 - GET /:id (get by id customer)
 - POST /login (login customer)
+- GET /logout (logout customer)
 
 - #### Order
 - PATCH /update (update order)
@@ -50,3 +53,6 @@
 3. Then run `npm run start:dev` in the customer, order, product and api-gateway directories to run it. And you can test it from localhost:8080.
 
 
+## for test with admin:
+email:admin@gmail.com
+password:admin

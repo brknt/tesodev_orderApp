@@ -9,10 +9,26 @@ const expect = chai.expect;
 
 
 describe('Customer Authenticatiton', async () => {
-    // after((done) => {
-    //      deleteTestCustomer();
-    //     done();
-    // });
+    after((done) => {
+         deleteTestCustomer();
+        done();
+    });
+
+    // When customer service first runs, it automatically creates the admin.
+    beforeEach((done)=>{
+        const admin = {
+            email: "admin@gmail.com",
+            password: "admin",
+        }
+        chai.request(app)
+            .post('/login')
+            .send(admin)
+            .then((res)=>{
+                expect(res).to.have.status(200);
+                done();
+            });
+    });
+
 
     describe('POST /create', () => {
         it('should register/create a new customer', (done) => {
@@ -65,6 +81,81 @@ describe('Customer Authenticatiton', async () => {
         });
     });
 
+    describe('GET /', () => {
+        it('admin should be  getAll', (done) => {
+            chai
+                .request(app)
+                .get('/')
+                .then((res) => {
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+        // it('customer should not getAll', (done) => {
+        //     const customer = {
+        //         email: "test@gmail.com",
+        //         password: "test1234",
+        //     }
+        //     chai
+        //         .request(app)
+        //         .post('/login')
+        //         .send(customer)
+        //         .then((res) => {
+        //             expect(res).to.have.status(200);
+        //             done();
+        //         });
+                
+        // });
+    });
+
+    describe('POST /login', () => {
+        it('should return a JWT token for a valid user', (done) => {
+            const customer = {
+                email: "test@gmail.com",
+                password: "test1234",
+            }
+
+            chai
+                .request(app)
+                .post('/login')
+                .send(customer)
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('object');
+                    expect(res.body).to.have.property("code");
+                    expect(res.body).to.have.property("data");
+                    expect(res.body.data).to.have.property("success", true);
+                    expect(res.body.data).to.have.property("token");
+                    done();
+                });
+        });
+
+        it('should return an error for an invalid customer', (done) => {
+            chai
+                .request(app)
+                .post('/login')
+                .send({ email: 'invalidCustomer', password: 'invalidPassword' })
+                .end((err, res) => {
+                    expect(res).to.have.status(401);
+                    expect(res.body).to.have.property("result", "Invalid email or password");
+                    done();
+                });
+        });
+        it('should return an error for an incorrect password', (done) => {
+            chai
+                .request(app)
+                .post('/login')
+                .send({ email: 'test@gmail.com', password: 'wrongPassword' })
+                .end((err, res) => {
+                    expect(res).to.have.status(401);
+                    expect(res.body).to.have.property("result", "Invalid email or password");
+                    done();
+                });
+        });
+    });
+
+   
+
     describe('PATCH /update/:id', () => {
         it('should update a customer', (done) => {
             const customer = {
@@ -116,17 +207,7 @@ describe('Customer Authenticatiton', async () => {
     });
 
 
-    describe('GET /', () => {
-        it('should getAll customer', (done) => {
-            chai
-                .request(app)
-                .get('/')
-                .then((res) => {
-                    expect(res).to.have.status(200);
-                    done();
-                });
-        });
-    });
+    
 
 
     describe('GET /:id', () => {
@@ -158,51 +239,7 @@ describe('Customer Authenticatiton', async () => {
     });
 
 
-    describe('POST /login', () => {
-        it('should return a JWT token for a valid user', (done) => {
-            const customer = {
-                email: "test@gmail.com",
-                password: "test1234update",
-            }
-
-            chai
-                .request(app)
-                .post('/login')
-                .send(customer)
-                .end((err, res) => {
-                    expect(res).to.have.status(200);
-                    expect(res.body).to.be.a('object');
-                    expect(res.body).to.have.property("code");
-                    expect(res.body).to.have.property("data");
-                    expect(res.body.data).to.have.property("success", true);
-                    expect(res.body.data).to.have.property("token");
-                    done();
-                });
-        });
-
-        it('should return an error for an invalid customer', (done) => {
-            chai
-                .request(app)
-                .post('/login')
-                .send({ email: 'invalidCustomer', password: 'invalidPassword' })
-                .end((err, res) => {
-                    expect(res).to.have.status(401);
-                    expect(res.body).to.have.property("result", "Invalid email or password");
-                    done();
-                });
-        });
-        it('should return an error for an incorrect password', (done) => {
-            chai
-                .request(app)
-                .post('/login')
-                .send({ email: 'test@gmail.com', password: 'wrongPassword' })
-                .end((err, res) => {
-                    expect(res).to.have.status(401);
-                    expect(res.body).to.have.property("result", "Invalid email or password");
-                    done();
-                });
-        });
-    });
+  
 
     describe('GET /logout', () => {
         it('It is a logout for a valid user and the cookie should be cleared.', (done) => {

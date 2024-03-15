@@ -395,11 +395,11 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8081/customer/create",
+									"raw": "localhost:8080/customer/create",
 									"host": [
 										"localhost"
 									],
-									"port": "8081",
+									"port": "8080",
 									"path": [
 										"customer",
 										"create"
@@ -423,11 +423,11 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8081/customer/update/8e5ef50f-7733-4250-9809-a2f1a3b8322b",
+									"raw": "localhost:8080/customer/update/8e5ef50f-7733-4250-9809-a2f1a3b8322b",
 									"host": [
 										"localhost"
 									],
-									"port": "8081",
+									"port": "8080",
 									"path": [
 										"customer",
 										"update",
@@ -481,14 +481,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8080/customer/f8823e89-2316-4531-9b9e-272a28d3b717",
+									"raw": "localhost:8080/customer/06256c90-1a82-4322-8ada-7e07ea83b112",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
 										"customer",
-										"f8823e89-2316-4531-9b9e-272a28d3b717"
+										"06256c90-1a82-4322-8ada-7e07ea83b112"
 									]
 								}
 							},
@@ -501,7 +501,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"email\":\"yeni1@gmail.com\",\n    \"password\":\"1234passupdate\"\n}",
+									"raw": "{\n    \"email\":\"yeni3@gmail.com\",\n    \"password\":\"1234pass2\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -528,13 +528,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8080/customer/logout",
+									"raw": "localhost:8080/logout",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"customer",
 										"logout"
 									]
 								}
@@ -553,7 +552,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"name\":\"Product4\",\n    \"price\":28.2,\n    \"imageUrl\":\"url4\"\n}",
+									"raw": "{\n    \"name\":\"Product1\",\n    \"price\":13.5,\n    \"imageUrl\":\"url1\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -561,12 +560,13 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8082/create",
+									"raw": "localhost:8080/product/create",
 									"host": [
 										"localhost"
 									],
-									"port": "8082",
+									"port": "8080",
 									"path": [
+										"product",
 										"create"
 									]
 								}
@@ -574,7 +574,7 @@
 							"response": []
 						},
 						{
-							"name": "get product",
+							"name": "get product Copy",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -616,12 +616,13 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8082/buy",
+									"raw": "localhost:8080/product/buy",
 									"host": [
 										"localhost"
 									],
-									"port": "8082",
+									"port": "8080",
 									"path": [
+										"product",
 										"buy"
 									]
 								}
@@ -648,12 +649,13 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8083/update/8c8d5256-8f0a-4449-9249-80f3c49d79c1",
+									"raw": "localhost:8080/order/update/8c8d5256-8f0a-4449-9249-80f3c49d79c1",
 									"host": [
 										"localhost"
 									],
-									"port": "8083",
+									"port": "8080",
 									"path": [
+										"order",
 										"update",
 										"8c8d5256-8f0a-4449-9249-80f3c49d79c1"
 									]
@@ -676,12 +678,13 @@
 									}
 								},
 								"url": {
-									"raw": "localhost:8083/changeStatus/b2f8fa68-41e1-483e-9cf5-21311e5ee7e8",
+									"raw": "localhost:8080/order/changeStatus/b2f8fa68-41e1-483e-9cf5-21311e5ee7e8",
 									"host": [
 										"localhost"
 									],
-									"port": "8083",
+									"port": "8080",
 									"path": [
+										"order",
 										"changeStatus",
 										"b2f8fa68-41e1-483e-9cf5-21311e5ee7e8"
 									]
@@ -695,13 +698,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8083/",
+									"raw": "localhost:8080/order",
 									"host": [
 										"localhost"
 									],
-									"port": "8083",
+									"port": "8080",
 									"path": [
-										""
+										"order"
 									]
 								}
 							},
@@ -713,13 +716,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "localhost:8083/c34c9955-11e7-41ac-989e-21ba5b3d5ebc",
+									"raw": "localhost:8080/order/16ae3b50-5927-49e5-8a19-41a3de6d39f3",
 									"host": [
 										"localhost"
 									],
-									"port": "8083",
+									"port": "8080",
 									"path": [
-										"c34c9955-11e7-41ac-989e-21ba5b3d5ebc"
+										"order",
+										"16ae3b50-5927-49e5-8a19-41a3de6d39f3"
 									]
 								}
 							},
@@ -731,12 +735,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "localhost:8083/delete/aba63d49-b0ee-4d38-bcc0-2b5ea343da33",
+									"raw": "localhost:8080/order/delete/aba63d49-b0ee-4d38-bcc0-2b5ea343da33",
 									"host": [
 										"localhost"
 									],
-									"port": "8083",
+									"port": "8080",
 									"path": [
+										"order",
 										"delete",
 										"aba63d49-b0ee-4d38-bcc0-2b5ea343da33"
 									]
