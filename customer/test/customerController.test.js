@@ -1,44 +1,44 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../index.js');
-const { deleteTestCustomer } = require('../controllers/customerController.js');
+const { deleteTests } = require('../controllers/customerController.js');
 
 chai.use(chaiHttp);
 const expect = chai.expect;
 
 
 
-describe('Admin and Customer Authenticatiton', async () => {
-
-
+describe('Admin and Customer Authenticatiton', () => {
 
     describe('Admin Operations', () => {
-        after((done) => {
-            deleteTests();
-            done();
+
+        after(async () => {
+            await deleteTests();
+
         });
-        before(() => {
+
+        before(async () => {
             const admin = {
                 email: "admin@gmail.com",
                 password: "admin",
             };
-            chai
+            const res = await chai
                 .request(app)
-                .post('login')
+                .post('/login')
                 .send(admin)
-                .then((res) => {
-                    expect(res, "admin login error:").to.have.status(200);
-                    console.log("Admin logged in > token: ",res.body.data.token);
-                    done();
 
-                });
+            tokenAdmin = res.body.data.token;
+            expect(res, "admin login error:").to.have.status(200);
+            console.log('admin logged in > token: ', tokenAdmin);
+
 
         });
         describe('POST /create', () => {
-            it('[Admin] should register/create a new customer', (done) => {
-                chai
+            it('[Admin] should register/create a new customer', async () => {
+                const res = await chai
                     .request(app)
                     .post('/create')
+                    .set('Cookie', `jwt=${tokenAdmin}`)
                     .send({
                         name: "admintestname",
                         email: "admintest@gmail.com",
@@ -49,25 +49,26 @@ describe('Admin and Customer Authenticatiton', async () => {
                             country: "admintestcountry",
                             cityCode: 1
                         }
-                    }).end((err, res) => {
-                        adminCustomerId = res.body.data.result;
-                        expect(res).to.have.status(201);
-                        expect(res.body).to.be.a('object');
-                        expect(res.body).to.have.property("code");
-                        expect(res.body).to.have.property("data");
-                        expect(res.body.data).to.have.property("success", true);
-                        expect(res.body.data).to.have.property("result");
-                        console.log('Admin saved customer > adminCustomerId:', adminCustomerId);
-
-                        done();
-
                     });
+
+                adminCustomerId = res.body.data.result;
+                expect(res).to.have.status(201);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("code");
+                expect(res.body).to.have.property("data");
+                expect(res.body.data).to.have.property("success", true);
+                expect(res.body.data).to.have.property("result");
+                console.log('Admin saved customer > adminCustomerId:', adminCustomerId);
+
+
+
             });
 
-            it('[Admin] should register an error if such a customer already exists', (done) => {
-                chai
+            it('[Admin] should register an error if such a customer already exists', async () => {
+                const res = await chai
                     .request(app)
                     .post('/create')
+                    .set('Cookie', `jwt=${tokenAdmin}`)
                     .send({
                         name: "admintestname",
                         email: "admintest@gmail.com",
@@ -78,138 +79,82 @@ describe('Admin and Customer Authenticatiton', async () => {
                             country: "admintestcountry",
                             cityCode: 1
                         }
-                    }).end((err, res) => {
-
-                        expect(res).to.have.status(400);
-                        expect(res.body).to.have.property("result", "Such a customer already exists!");
-                        done();
                     });
+
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property("result", "Such a customer already exists!");
+
+
             });
         });
 
-        // describe('GET /', () => {
-        //     it('admin should be  getAll', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get('/')
-        //             .then((res) => {
-        //                 expect(res).to.have.status(200);
-        //                 done();
-        //             });
-        //     });
-        //     // it('customer should not getAll', (done) => {
-        //     //     const customer = {
-        //     //         email: "test@gmail.com",
-        //     //         password: "test1234",
-        //     //     }
-        //     //     chai
-        //     //         .request(app)
-        //     //         .post('/login')
-        //     //         .send(customer)
-        //     //         .then((res) => {
-        //     //             expect(res).to.have.status(200);
-        //     //             done();
-        //     //         });
+        describe('GET /', () => {
+            it('[Admin] should be  getAll', async () => {
+                const res = await chai
+                    .request(app)
+                    .get('/')
+                    .set('Cookie', `jwt=${tokenAdmin}`)
 
-        //     // });
-        // });
-
-        // describe('POST /login', () => {
-        //     it('should return a JWT token for a valid user', (done) => {
-        //         const customer = {
-        //             email: "test@gmail.com",
-        //             password: "test1234",
-        //         }
-
-        //         chai
-        //             .request(app)
-        //             .post('/login')
-        //             .send(customer)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("code");
-        //                 expect(res.body).to.have.property("data");
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 expect(res.body.data).to.have.property("token");
-        //                 done();
-        //             });
-        //     });
-
-        //     it('should return an error for an invalid customer', (done) => {
-        //         chai
-        //             .request(app)
-        //             .post('/login')
-        //             .send({ email: 'invalidCustomer', password: 'invalidPassword' })
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(401);
-        //                 expect(res.body).to.have.property("result", "Invalid email or password");
-        //                 done();
-        //             });
-        //     });
-        //     it('should return an error for an incorrect password', (done) => {
-        //         chai
-        //             .request(app)
-        //             .post('/login')
-        //             .send({ email: 'test@gmail.com', password: 'wrongPassword' })
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(401);
-        //                 expect(res.body).to.have.property("result", "Invalid email or password");
-        //                 done();
-        //             });
-        //     });
-        // });
+                expect(res).to.have.status(200);
 
 
-        // describe('PATCH /update/:id', () => {
-        //     it('should update a customer', (done) => {
-        //         const customer = {
-        //             name: "testnameupdate",
-        //             email: "test@gmail.com",
-        //             password: "test1234update",
-        //             address: {
-        //                 addressLine: "testadresupdate",
-        //                 city: "testcityupdate",
-        //                 country: "testcountryupdate",
-        //                 cityCode: 2
-        //             }
-        //         };
+            });
 
-        //         chai
-        //             .request(app)
-        //             .patch(`/update/${customerId}`)
-        //             .send(customer).end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("code");
-        //                 expect(res.body).to.have.property("data");
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 done();
-        //             });
-        //     });
+        });
 
-        //     it('If no such customer exists it should an error', (done) => {
-        //         chai
-        //             .request(app)
-        //             .patch(`/update/${customerId}non-id`)
-        //             .send({
-        //                 name: "testnameupdate",
-        //                 email: "test@gmail.com",
-        //                 password: "test1234update",
-        //                 address: {
-        //                     addressLine: "testadresupdate",
-        //                     city: "testcityupdate",
-        //                     country: "testcountryupdate",
-        //                     cityCode: 2
-        //                 }
-        //             }).end((err, res) => {
-        //                 expect(res).to.have.status(400);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("result");
-        //                 done();
-        //             })
-        //     })
-        // });
+
+
+        describe('PATCH /update/:id', () => {
+            it('[Admin] should update a customer', async () => {
+                const customer = {
+                    name: "admintestnameupdate",
+                    email: "admintest@gmail.com",
+                    password: "test1234update",
+                    address: {
+                        addressLine: "admintestadresupdate",
+                        city: "admintestcityupdate",
+                        country: "admintestcountryupdate",
+                        cityCode: 2
+                    }
+                };
+
+                const res = await chai
+                    .request(app)
+                    .patch(`/update/${adminCustomerId}`)
+                    .set('Cookie', `jwt=${tokenAdmin}`)
+                    .send(customer)
+
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("code");
+                expect(res.body).to.have.property("data");
+                expect(res.body.data).to.have.property("success", true);
+
+
+            });
+
+            it('[Admin] If no such customer exists it should an error', async () => {
+                const customer = {
+                    name: "admintestnameupdate",
+                    email: "admintest@gmail.com",
+                    password: "test1234update",
+                    address: {
+                        addressLine: "admintestadresupdate",
+                        city: "admintestcityupdate",
+                        country: "admintestcountryupdate",
+                        cityCode: 2
+                    }
+                };
+                const res = await chai
+                    .request(app)
+                    .patch(`/update/${adminCustomerId}non-id`)
+                    .set('Cookie', `jwt=${tokenAdmin}`)
+                    .send(customer)
+                expect(res).to.have.status(400);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("result");
+            });
+        });
 
         // describe('GET /:id', () => {
         //     it('should get  a customer with id', (done) => {
