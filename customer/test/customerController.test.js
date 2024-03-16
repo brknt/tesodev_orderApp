@@ -102,8 +102,6 @@ describe('Admin and Customer Authenticatiton', () => {
 
         });
 
-
-
         describe('PATCH /update/:id', () => {
             it('[Admin] should update a customer', async () => {
                 const customer = {
@@ -156,33 +154,33 @@ describe('Admin and Customer Authenticatiton', () => {
             });
         });
 
-        // describe('GET /:id', () => {
-        //     it('should get  a customer with id', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get(`/${customerId}`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("code");
-        //                 expect(res.body).to.have.property("data");
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 expect(res.body.data).to.have.property("result");
-        //                 done();
-        //             });
-        //     });
+        describe('GET /:id', () => {
+            it('should get  a customer with id', async () => {
+                const res = await chai
+                    .request(app)
+                    .get(`/${adminCustomerId}`)
+                    .set('Cookie', `jwt=${tokenAdmin}`)
 
-        //     it('If no such customer exists it should an error', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get(`/${customerId}non-id`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(400);
-        //                 expect(res.body).to.have.property("result", "There is no customer registered");
-        //                 done();
-        //             });
-        //     });
-        // });
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("code");
+                expect(res.body).to.have.property("data");
+                expect(res.body.data).to.have.property("success", true);
+                expect(res.body.data).to.have.property("result");
+
+            });
+
+            it('If no such customer exists it should an error', async () => {
+                const res = await chai
+                    .request(app)
+                    .get(`/${adminCustomerId}non-id`)
+                    .set('Cookie',`jwt=${tokenAdmin}`)
+
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property("result", "There is no customer registered");
+
+            });
+        });
 
         // describe('GET /logout', () => {
         //     it('It is a logout for a valid user and the cookie should be cleared.', (done) => {
