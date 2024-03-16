@@ -204,8 +204,8 @@ const joiValidate = async (req, res, next) => {
 }
 
 // delete customer for test
-const deleteTestCustomer = async () => {
-    await Customer.deleteMany({ email: 'test@gmail.com' });
+const deleteTests = async () => {
+    await Customer.deleteMany({ email:{$in:["admintest@gmail.com","customertest@gmail.com"]} });
 }
 
 module.exports = {
@@ -217,5 +217,5 @@ module.exports = {
     joiValidate,
     login,
     logout,
-    deleteTestCustomer
+    deleteTests
 }
