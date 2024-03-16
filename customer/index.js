@@ -18,15 +18,18 @@ if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
 //CONNECT MONGODB
 mongoose.connect(MONGO_URI).then(async() => {
     console.log('Customer DB connection successful');
-   const [admin] = await Customer.find({email:"admin@gmail.com"});   
-    if(!admin){
-        await Customer.create({
-            name:"admin",
-            email:"admin@gmail.com",
-            password:"admin",
-            role:"admin" 
-        });
+    if(!process.env.NODE_ENV === 'test'){
+        const [admin] = await Customer.find({email:"admin@gmail.com"});   
+        if(!admin){
+            await Customer.create({
+                name:"admin",
+                email:"admin@gmail.com",
+                password:"admin",
+                role:"admin" 
+            });
+        }
     }
+  
 
 }).catch((err) => {
     console.log(`Customer DB connection failed error = ${err}`);

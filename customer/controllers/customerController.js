@@ -81,7 +81,7 @@ const Delete = async (req, res) => {
             return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: `There is no customer registered` });
 
         } else {
-            await Address.findOneAndDelete({ _id: customer.address._id });
+            await Address.findOneAndDelete({ _id: customer.address });
 
             return res.json(utils.Response.successResponse({ success: true }, 200));
 

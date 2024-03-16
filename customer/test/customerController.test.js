@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../index.js');
 const { deleteTests } = require('../controllers/customerController.js');
-
+const Customer = require('../models/Customer.js');
 chai.use(chaiHttp);
 const expect = chai.expect;
 
@@ -14,18 +14,26 @@ describe('Admin and Customer Authenticatiton', () => {
 
         after(async () => {
             await deleteTests();
-
         });
 
         before(async () => {
-            const admin = {
+            const [adminRegister] = await Customer.find({email:"admin@gmail.com"});   
+            if(!adminRegister){
+                await Customer.create({
+                    name:"admin",
+                    email:"admin@gmail.com",
+                    password:"admin",
+                    role:"admin" 
+                });
+            }
+            const adminLogin = {
                 email: "admin@gmail.com",
                 password: "admin",
             };
             const res = await chai
                 .request(app)
                 .post('/login')
-                .send(admin)
+                .send(adminLogin)
 
             tokenAdmin = res.body.data.token;
             expect(res, "admin login error:").to.have.status(200);
@@ -155,7 +163,7 @@ describe('Admin and Customer Authenticatiton', () => {
         });
 
         describe('GET /:id', () => {
-            it('should get  a customer with id', async () => {
+            it('[Admin] should get  a customer with id', async () => {
                 const res = await chai
                     .request(app)
                     .get(`/${adminCustomerId}`)
@@ -170,10 +178,36 @@ describe('Admin and Customer Authenticatiton', () => {
 
             });
 
-            it('If no such customer exists it should an error', async () => {
+            it('[Admin] If no such customer exists it should an error', async () => {
                 const res = await chai
                     .request(app)
                     .get(`/${adminCustomerId}non-id`)
+                    .set('Cookie', `jwt=${tokenAdmin}`)
+
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property("result", "There is no customer registered");
+
+            });
+        });
+
+
+        describe('DELETE /delete/:id', () => {
+            it('[Admin] should delete a customer', async () => {
+                const res = await chai
+                    .request(app)
+                    .delete(`/delete/${adminCustomerId}`)
+                    .set('Cookie', `jwt=${tokenAdmin}`)
+
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.data).to.have.property("success", true);
+
+            });
+
+            it('[Admin] If no such customer exists it should an error', async () => {
+                const res = await chai
+                    .request(app)
+                    .delete(`/delete/${adminCustomerId}non-id`)
                     .set('Cookie',`jwt=${tokenAdmin}`)
 
                 expect(res).to.have.status(400);
@@ -181,6 +215,7 @@ describe('Admin and Customer Authenticatiton', () => {
 
             });
         });
+
 
         // describe('GET /logout', () => {
         //     it('It is a logout for a valid user and the cookie should be cleared.', (done) => {
@@ -200,30 +235,6 @@ describe('Admin and Customer Authenticatiton', () => {
         // });
 
 
-        // describe('DELETE /delete/:id', () => {
-        //     it('should delete a customer', (done) => {
-        //         chai
-        //             .request(app)
-        //             .delete(`/delete/${customerId}`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 done();
-        //             });
-        //     });
-
-        //     it('If no such customer exists it should an error', (done) => {
-        //         chai
-        //             .request(app)
-        //             .delete(`/delete/${customerId}non-id`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(400);
-        //                 expect(res.body).to.have.property("result", "There is no customer registered");
-        //                 done();
-        //             });
-        //     });
-        // });
 
 
     });
