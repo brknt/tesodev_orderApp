@@ -241,9 +241,9 @@ describe('Admin and Customer Authenticatiton', () => {
 
     describe('Customer Operations', () => {
 
-        // after(async () => {
-        //     await deleteTests("customertest@gmail.com");
-        // });
+        after(async () => {
+            await deleteTests("customertest@gmail.com");
+        });
 
         describe('POST /create', () => {
             it('[Customer] should register/create a new customer', async () => {
@@ -440,80 +440,40 @@ describe('Admin and Customer Authenticatiton', () => {
             });
         });
 
+        describe('DELETE /delete/:id', () => {
+            it('[Customer] should not delete a customer', async () => {
+                const res = await chai
+                    .request(app)
+                    .delete(`/delete/${customerId}`)
+                    .set('Cookie', `jwt=${tokenCustomer}`)
 
-        // describe('GET /:id', () => {
-        //     it('should get  a customer with id', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get(`/${customerId}`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("code");
-        //                 expect(res.body).to.have.property("data");
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 expect(res.body.data).to.have.property("result");
-        //                 done();
-        //             });
-        //     });
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property("result", "You cant do it!");
 
-        //     it('If no such customer exists it should an error', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get(`/${customerId}non-id`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(400);
-        //                 expect(res.body).to.have.property("result", "There is no customer registered");
-        //                 done();
-        //             });
-        //     });
-        // });
+            });
+
+        });
 
 
+        describe('GET /logout', () => {
+            it('[Customer] It is a logout for a valid user and the cookie should be cleared.', async () => {
+                const res = await chai
+                    .request(app)
+                    .get('/logout')
+                    .set('Cookie', `jwt=${tokenCustomer}`)
+
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("code");
+                expect(res.body).to.have.property("data");
+                expect(res.body.data).to.have.property("success", true);
+                expect(res.body.data).to.have.property("result", "logout");
+
+            });
+        });
 
 
-        // describe('GET /logout', () => {
-        //     it('It is a logout for a valid user and the cookie should be cleared.', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get('/logout')
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("code");
-        //                 expect(res.body).to.have.property("data");
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 expect(res.body.data).to.have.property("result","logout");
-        //                 done();
-        //             });
-        //     });
-        // });
 
-
-        // describe('DELETE /delete/:id', () => {
-        //     it('should delete a customer', (done) => {
-        //         chai
-        //             .request(app)
-        //             .delete(`/delete/${customerId}`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 done();
-        //             });
-        //     });
-
-        //     it('If no such customer exists it should an error', (done) => {
-        //         chai
-        //             .request(app)
-        //             .delete(`/delete/${customerId}non-id`)
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(400);
-        //                 expect(res.body).to.have.property("result", "There is no customer registered");
-        //                 done();
-        //             });
-        //     });
-        // });
 
     });
 
