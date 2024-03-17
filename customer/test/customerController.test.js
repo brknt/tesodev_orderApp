@@ -355,21 +355,6 @@ describe('Admin and Customer Authenticatiton', () => {
                 expect(res.body).to.have.property("result", "You cant do it!");
 
             });
-            // it('customer should not getAll', (done) => {
-            //     const customer = {
-            //         email: "test@gmail.com",
-            //         password: "test1234",
-            //     }
-            //     chai
-            //         .request(app)
-            //         .post('/login')
-            //         .send(customer)
-            //         .then((res) => {
-            //             expect(res).to.have.status(200);
-            //             done();
-            //         });
-
-            // });
         });
 
 
@@ -427,6 +412,33 @@ describe('Admin and Customer Authenticatiton', () => {
 
 
 
+        describe('GET /:id', () => {
+            it('[Customer] should getId with own id', async () => {
+                const res = await chai
+                    .request(app)
+                    .get(`/${customerId}`)
+                    .set('Cookie', `jwt=${tokenCustomer}`)
+
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("code");
+                expect(res.body).to.have.property("data");
+                expect(res.body.data).to.have.property("success", true);
+                expect(res.body.data).to.have.property("result");
+
+            });
+
+            it('[Customer] If no such customer exists it should an error', async () => {
+                const res = await chai
+                    .request(app)
+                    .get(`/${customerId}non-id`)
+                    .set('Cookie', `jwt=${tokenCustomer}`)
+
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property("result", "There is no customer registered");
+
+            });
+        });
 
 
         // describe('GET /:id', () => {
