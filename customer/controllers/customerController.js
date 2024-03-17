@@ -204,8 +204,8 @@ const joiValidate = async (req, res, next) => {
 }
 
 // delete customer for test
-const deleteTests = async () => {
-    await Customer.deleteMany({ email:{$in:["admintest@gmail.com","customertest@gmail.com"]} });
+const deleteTests = async (email) => {
+    await Customer.deleteMany({ email:{$in:[email]} });
 }
 
 module.exports = {

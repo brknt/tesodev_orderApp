@@ -20,7 +20,7 @@ module.exports = (roles) => {
                             next();
 
                         } else {
-                            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: "You cannot update another customer!" });
+                            return res.status(utils.Enum.HTTP_CODES.BAD_REQUEST).json({ result: "You cant do it!" });
                         }
                     } else {
 
