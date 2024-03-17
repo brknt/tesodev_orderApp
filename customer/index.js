@@ -18,7 +18,6 @@ if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
 //CONNECT MONGODB
 mongoose.connect(MONGO_URI).then(async() => {
     console.log('Customer DB connection successful');
-    if(!process.env.NODE_ENV === 'test'){
         const [admin] = await Customer.find({email:"admin@gmail.com"});   
         if(!admin){
             await Customer.create({
@@ -27,7 +26,7 @@ mongoose.connect(MONGO_URI).then(async() => {
                 password:"admin",
                 role:"admin" 
             });
-        }
+        
     }
   
 
