@@ -56,3 +56,11 @@
 ## for test with admin:
 email:admin@gmail.com
 password:admin
+
+
+## Service Tests
+
+1. Customer Test:
+    `cd customer` then `npm test`
+
+                

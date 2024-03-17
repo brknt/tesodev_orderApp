@@ -17,13 +17,13 @@ describe('Admin and Customer Authenticatiton', () => {
         });
 
         before(async () => {
-            const [adminRegister] = await Customer.find({email:"admin@gmail.com"});   
-            if(!adminRegister){
+            const [adminRegister] = await Customer.find({ email: "admin@gmail.com" });
+            if (!adminRegister) {
                 await Customer.create({
-                    name:"admin",
-                    email:"admin@gmail.com",
-                    password:"admin",
-                    role:"admin" 
+                    name: "admin",
+                    email: "admin@gmail.com",
+                    password: "admin",
+                    role: "admin"
                 });
             }
             const adminLogin = {
@@ -208,7 +208,7 @@ describe('Admin and Customer Authenticatiton', () => {
                 const res = await chai
                     .request(app)
                     .delete(`/delete/${adminCustomerId}non-id`)
-                    .set('Cookie',`jwt=${tokenAdmin}`)
+                    .set('Cookie', `jwt=${tokenAdmin}`)
 
                 expect(res).to.have.status(400);
                 expect(res.body).to.have.property("result", "There is no customer registered");
@@ -217,22 +217,22 @@ describe('Admin and Customer Authenticatiton', () => {
         });
 
 
-        // describe('GET /logout', () => {
-        //     it('It is a logout for a valid user and the cookie should be cleared.', (done) => {
-        //         chai
-        //             .request(app)
-        //             .get('/logout')
-        //             .end((err, res) => {
-        //                 expect(res).to.have.status(200);
-        //                 expect(res.body).to.be.a('object');
-        //                 expect(res.body).to.have.property("code");
-        //                 expect(res.body).to.have.property("data");
-        //                 expect(res.body.data).to.have.property("success", true);
-        //                 expect(res.body.data).to.have.property("result","logout");
-        //                 done();
-        //             });
-        //     });
-        // });
+        describe('GET /logout', () => {
+            it('[Admin] It is a logout for a valid user and the cookie should be cleared.', async() => {
+                const res = await chai
+                    .request(app)
+                    .get('/logout')
+                    .set('Cookie', `jwt=${tokenAdmin}`)
+
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property("code");
+                expect(res.body).to.have.property("data");
+                expect(res.body.data).to.have.property("success", true);
+                expect(res.body.data).to.have.property("result", "logout");
+
+            });
+        });
 
 
 
