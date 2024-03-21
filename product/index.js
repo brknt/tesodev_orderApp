@@ -49,4 +49,6 @@ app.use('/', productRoutes.routes);
 
 app.listen(port, () => {
     console.log(`Product-service started on port: ${port}`);
-})
+});
+
+module.exports = app;

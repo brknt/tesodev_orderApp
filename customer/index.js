@@ -9,30 +9,28 @@ const Customer = require('./models/Customer');
 
 const app = express();
 const port = config.PORT;
-let MONGO_URI = config.MONGO_URI ;
+let MONGO_URI = config.MONGO_URI;
 
-if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
-    MONGO_URI = "mongodb://localhost/customerDB"  
-  }
-  
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev') {
+    MONGO_URI = "mongodb://localhost/customerDB"
+}
+
+
 //CONNECT MONGODB
-mongoose.connect(MONGO_URI).then(async() => {
+mongoose.connect(MONGO_URI).then(async () => {
     console.log('Customer DB connection successful');
-        const [admin] = await Customer.find({email:"admin@gmail.com"});   
-        if(!admin){
-            await Customer.create({
-                name:"admin",
-                email:"admin@gmail.com",
-                password:"admin",
-                role:"admin" 
-            });
-        
+    const [admin] = await Customer.find({ email: "admin@gmail.com" });
+    if (!admin) {
+        await Customer.create({
+            name: "admin",
+            email: "admin@gmail.com",
+            password: "admin",
+            role: "admin"
+        });
     }
-  
 
 }).catch((err) => {
     console.log(`Customer DB connection failed error = ${err}`);
-
 });
 
 
@@ -54,4 +52,4 @@ app.listen(port, () => {
     console.log(`Customer-service started on port: ${port}`);
 })
 
-module.exports =  app;
+module.exports = app;

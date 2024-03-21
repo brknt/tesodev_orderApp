@@ -18,7 +18,7 @@ const create = async (req, res) => {
         });
 
         await newProduct.save();
-        return res.json(utils.Response.successResponse({ success: true, result: newProduct }, 201))
+        return res.status(utils.Enum.HTTP_CODES.CREATED).json(utils.Response.successResponse({ success: true, result: newProduct }, 201))
 
     } catch (error) {
         let errorResponse = utils.Response.errorResponse(error);
@@ -28,8 +28,6 @@ const create = async (req, res) => {
 
 const getAll = async (req, res) => {
     try {
-
-
         const products = await Product.find();
         return res.json(utils.Response.successResponse({ success: true, result: products }, 200));
     } catch (error) {

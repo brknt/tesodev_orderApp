@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const app = require('../index.js');
 const { deleteTests } = require('../controllers/customerController.js');
 const Customer = require('../models/Customer.js');
+
 chai.use(chaiHttp);
 const expect = chai.expect;
 
@@ -13,7 +14,9 @@ describe('Admin and Customer Authenticatiton', () => {
     describe('Admin Operations', () => {
 
         after(async () => {
-            await deleteTests("admintest@gmail.com");
+            await Customer.deleteMany({ email: "admintest@gmail.com" });
+            console.log('Test customer created for admin was deleted');
+            
         });
 
         before(async () => {
@@ -97,7 +100,7 @@ describe('Admin and Customer Authenticatiton', () => {
         });
 
         describe('GET /', () => {
-            it('[Admin] should be  getAll', async () => {
+            it('[Admin] should be  getAll customer', async () => {
                 const res = await chai
                     .request(app)
                     .get('/')
@@ -242,7 +245,8 @@ describe('Admin and Customer Authenticatiton', () => {
     describe('Customer Operations', () => {
 
         after(async () => {
-            await deleteTests("customertest@gmail.com");
+            await Customer.deleteMany({ email: "customertest@gmail.com" });
+            console.log('Test customer created for customer was deleted');
         });
 
         describe('POST /create', () => {
@@ -345,7 +349,7 @@ describe('Admin and Customer Authenticatiton', () => {
 
 
         describe('GET /', () => {
-            it('[Customer] customer should not be  getAll', async () => {
+            it('[Customer] customer should not be  getAll customer', async () => {
                 const res = await chai
                     .request(app)
                     .get('/')
@@ -359,7 +363,7 @@ describe('Admin and Customer Authenticatiton', () => {
 
 
         describe('PATCH /update/:id', () => {
-            it('[Customer] customer should update itself', async () => {
+            it('[Customer] customer should update herself/himself', async () => {
                 const customer = {
                     name: "customertestnameupdate",
                     email: "customertest@gmail.com",
@@ -406,7 +410,7 @@ describe('Admin and Customer Authenticatiton', () => {
                     .set('Cookie', `jwt=${tokenCustomer}`)
                     .send(customer)
                 expect(res).to.have.status(400);
-                expect(res.body).to.have.property("result","You cant do it!");
+                expect(res.body).to.have.property("result", "You cant do it!");
             });
         });
 

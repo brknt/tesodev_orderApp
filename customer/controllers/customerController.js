@@ -139,10 +139,10 @@ const login = async (req, res) => {
         if (!compare) {
             return res.status(utils.Enum.HTTP_CODES.UNAUTHORIZED).json({ result: `Invalid email or password` });
         }
-        
+
         const payload = {
             id: customer._id,
-            role:customer.role
+            role: customer.role
         };
         const token = jwt.sign(payload, config.JWT_SECRET, {
             expiresIn: '1d'
@@ -162,16 +162,15 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-       
-
+        
         res.cookie('jwt', " ", {
             httpOnly: true,
             maxAge: 1000 * 60 * 60 * 24
         });
 
-        
-        
-        return res.json(utils.Response.successResponse({ success: true, result: "logout"}, 200));
+
+
+        return res.json(utils.Response.successResponse({ success: true, result: "logout" }, 200));
 
     } catch (error) {
         let errorResponse = utils.Response.errorResponse(error);
@@ -205,7 +204,7 @@ const joiValidate = async (req, res, next) => {
 
 // delete customer for test
 const deleteTests = async (email) => {
-    await Customer.deleteMany({ email:{$in:[email]} });
+    await Customer.deleteMany({ email: { $in: [email] } });
 }
 
 module.exports = {
