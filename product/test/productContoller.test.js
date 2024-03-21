@@ -11,12 +11,12 @@ const expect = chai.expect;
 describe('Admin and Customer Product Operations', () => {
 
     describe('Admin operations', () => {
-        after(async()=>{
+        after(async () => {
             await chai
-            .request("http://127.0.0.1:8081")
-            .get('/logout');
+                .request("http://127.0.0.1:8081")
+                .get('/logout');
             await Product.deleteMany({ _id: productId });
-            console.log('test product deleted');       
+            console.log('test product deleted');
         });
         before(async () => {
 
@@ -83,6 +83,32 @@ describe('Admin and Customer Product Operations', () => {
                 expect(res.body.data.result).to.be.a('array');
             });
 
+        });
+
+        describe('POST /buy', () => {
+            it('[Admin] should not buy/(create order) products', async () => {
+                const data = {
+                    address: {
+                        addressLine: "lineadmintest",
+                        city: "cityadmintest",
+                        country: "countryadmintest",
+                        cityCode: 1233
+                    },
+                    ids: [
+                        { _id: productId },
+                    ]
+                };
+
+                const res = await chai
+                    .request(app)
+                    .post('/buy')
+                    .set('Cookie', `jwt=${tokenAdmin}`)
+                    .send(data);
+
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property("result", "You cant do it!");
+
+            });
         });
 
 
