@@ -9,9 +9,9 @@ const utils = require('../utils/utils');
 
 const create = async (req, res) => {
     try {
-
         const data = req.body;
         const newProduct = await Product.create({
+            customerId:req.user.id,
             name: data.name,
             price: data.price,
             imageUrl: data.imageUrl

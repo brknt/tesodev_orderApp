@@ -22,9 +22,9 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-
-    imageId:{
-        type:String
+    customerId:{
+        type:String,
+        ref: 'Customer'
     }
 });
 
