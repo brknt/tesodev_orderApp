@@ -62,5 +62,9 @@ password:admin
 
 1. Customer Test:
     `cd customer` then `npm test`
+2. Product Test:
+    Customer and order services must be up
+    `cd product` then `npm test`
+
 
                 

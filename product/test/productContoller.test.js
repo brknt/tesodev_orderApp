@@ -128,8 +128,8 @@ describe('Admin and Customer Product Operations', () => {
                 .send({
                     email: "admin@gmail.com",
                     password: "admin"
-                    
-                }).then((res)=>{
+
+                }).then((res) => {
                     tokenAdmin2 = res.body.data.token;
                     expect(res).to.have.status(200);
                 })
@@ -140,7 +140,8 @@ describe('Admin and Customer Product Operations', () => {
                 .set('Cookie', `jwt=${tokenAdmin2}`)
                 .then((res) => {
                     expect(res).to.have.status(200);
-                })
+                });
+
 
         });
         before(async () => {
@@ -163,8 +164,6 @@ describe('Admin and Customer Product Operations', () => {
                 .send(customer)
                 .then((res) => {
                     customerId = res.body.data.result;
-                    console.log('IDDD::', customerId);
-
                     expect(res).to.have.status(201);
                 });
 
@@ -213,6 +212,72 @@ describe('Admin and Customer Product Operations', () => {
                 expect(res.body.data).to.have.property('result');
 
 
+
+            });
+        });
+
+        describe('GET /', () => {
+            it('[Customer] should be  getAll product', async () => {
+                const res = await chai
+                    .request(app)
+                    .get('/')
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body.data).to.have.property('result');
+                expect(res.body.data.result).to.be.a('array');
+            });
+
+        });
+
+        describe('POST /buy', () => {
+            it('[Customer] should be (buy products)/(create order)', async () => {
+                const data = {
+                    address: {
+                        addressLine: "lineadmintest",
+                        city: "cityadmintest",
+                        country: "countryadmintest",
+                        cityCode: 1233
+                    },
+                    ids: [
+                        { _id: customerProductId },
+                    ]
+                };
+
+                const res = await chai
+                    .request(app)
+                    .post('/buy')
+                    .set('Cookie', `jwt=${tokenCustomer}`)
+                    .send(data);
+
+                expect(res).to.have.status(200);
+                expect(res.body).to.be.a('object');
+                expect(res.body).to.have.property('code');
+                expect(res.body).to.have.property('data');
+                expect(res.body.data).to.have.property('success', true);
+                expect(res.body.data).to.have.property('result', 'Order created');
+
+            });
+            it('[Customer] If there is no product, should not be buy', async () => {
+                const data = {
+                    address: {
+                        addressLine: "lineadmintest",
+                        city: "cityadmintest",
+                        country: "countryadmintest",
+                        cityCode: 1233
+                    },
+                    ids: [
+
+                    ]
+                };
+
+                const res = await chai
+                    .request(app)
+                    .post('/buy')
+                    .set('Cookie', `jwt=${tokenCustomer}`)
+                    .send(data);
+
+                expect(res).to.have.status(400);
+                expect(res.body).to.have.property('result', 'There is no such product');
 
             });
         });

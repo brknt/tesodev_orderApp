@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../index.js');
-const { deleteTests } = require('../controllers/customerController.js');
 const Customer = require('../models/Customer.js');
 
 chai.use(chaiHttp);

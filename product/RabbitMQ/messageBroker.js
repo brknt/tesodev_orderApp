@@ -7,9 +7,11 @@ require('dotenv').config();
 // ---------------connect rabbitmq--------------------
 let channel;
 let RABBITMQ_URI = config.RABBITMQ_URI;
+let time = 20000;
 
-if (process.env.NODE_ENV === 'test' ||process.env.NODE_ENV === 'dev' ) {
-  RABBITMQ_URI = "amqp://127.0.0.1:5672"  
+if (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'dev') {
+  RABBITMQ_URI = "amqp://127.0.0.1:5672";
+  time = 0;
 }
 
 async function connect() {
@@ -25,7 +27,7 @@ async function connect() {
       console.error("Failed to connect to RabbitMQ:", err);
     }
 
-  }, 20000); // delay 20 second
+  }, time); // delay 20 second
 
 
 
